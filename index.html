@@ -113,5 +113,43 @@
   <section>
     <h2>Ons roggebrood</h2>
     <p>
-      Z
+      Zwaar, puur en eerlijk roggebrood zoals het hoort.  
+      Gemaakt van grove rogge, langzaam gegaard en zonder concessies.
+    </p>
+  </section>
 
+  <section class="product">
+    <h2>Bestelling plaatsen</h2>
+
+    <form method="post" action="#">
+      <label for="type">Kies uw roggebrood</label>
+      <select id="type" name="type" required>
+        <option value="">— maak een keuze —</option>
+        <option value="heel">Heel roggebrood</option>
+        <option value="half">Half roggebrood</option>
+      </select>
+
+      <label for="aantal">Aantal</label>
+      <input type="number" id="aantal" name="aantal" min="1" value="1" required>
+
+      <label for="naam">Naam</label>
+      <input type="text" id="naam" name="naam" required>
+
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="adres">Adres</label>
+      <textarea id="adres" name="adres" rows="3" required></textarea>
+
+      <button type="submit">Bestelling plaatsen</button>
+    </form>
+  </section>
+
+</main>
+
+<footer>
+  © Ambachtelijk Fries Roggebrood – puur & eerlijk
+</footer>
+
+</body>
+</html>
