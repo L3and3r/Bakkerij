@@ -1,129 +1,41 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <title>Fries Roggebrood – Ambachtelijk & Echt</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Georgia, "Times New Roman", serif;
-      background-color: #f4f1ec;
-      color: #2b1d14;
-      line-height: 1.6;
-    }
-
-    header {
-      background-color: #3b2416;
-      color: #f4f1ec;
-      padding: 2rem 1rem;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 2.2rem;
-      letter-spacing: 1px;
-    }
-
-    header p {
-      margin-top: 0.5rem;
-      font-style: italic;
-    }
-
-    main {
-      max-width: 720px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    section {
-      margin-bottom: 2.5rem;
-    }
-
-    h2 {
-      border-bottom: 1px solid #cbbba0;
-      padding-bottom: 0.3rem;
-      margin-bottom: 1rem;
-      font-size: 1.4rem;
-    }
-
-    .product {
-      background-color: #fff;
-      border: 1px solid #d8cfc2;
-      padding: 1.5rem;
-    }
-
-    label {
-      display: block;
-      margin-top: 1rem;
-      font-weight: bold;
-    }
-
-    select,
-    input,
-    textarea {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.3rem;
-      font-family: inherit;
-      font-size: 1rem;
-      border: 1px solid #b5a999;
-      background-color: #faf9f7;
-    }
-
-    textarea {
-      resize: vertical;
-    }
-
-    button {
-      margin-top: 1.5rem;
-      padding: 0.75rem;
-      width: 100%;
-      font-size: 1.1rem;
-      background-color: #3b2416;
-      color: #f4f1ec;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #2b1d14;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #6e6258;
-      padding: 2rem 1rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Fries Roggebrood – Ambachtelijk</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root { --bg:#f6f1ea; --dark:#3b2f2f; --accent:#8b5e3c; --light:#fff; }
+  body{margin:0;font-family:Georgia,serif;background:var(--bg);color:var(--dark);}
+  header{background:var(--dark);color:var(--light);text-align:center;padding:2rem;}
+  header h1{margin:0;font-size:2.2rem;letter-spacing:0.05em;}
+  header p{margin-top:0.5rem;font-style:italic;opacity:0.9;}
+  main{max-width:720px;margin:3rem auto;padding:0 1.5rem;}
+  h2{border-bottom:2px solid var(--accent);padding-bottom:0.5rem;margin-bottom:1.5rem;}
+  form{background:var(--light);padding:2rem;border:1px solid #ddd;border-radius:4px;}
+  label{display:block;margin-bottom:0.3rem;font-weight:bold;}
+  input, select{width:100%;padding:0.6rem;margin-bottom:1.2rem;font-size:1rem;border:1px solid #ccc;border-radius:3px;font-family:inherit;}
+  button{background:var(--accent);color:var(--light);border:none;padding:0.8rem 1.5rem;font-size:1rem;cursor:pointer;border-radius:3px;}
+  button:hover{background:#744a2d;}
+</style>
 </head>
-
 <body>
-
 <header>
-  <h1>Authentiek Fries Roggebrood</h1>
-  <p>Gebakken volgens eeuwenoud recept</p>
+  <h1>Fries Roggebrood</h1>
+  <p>Volgens oud recept — langzaam gebakken, puur en eerlijk</p>
 </header>
-
 <main>
-
   <section>
-    <h2>Ons roggebrood</h2>
-    <p>
-      Zwaar, puur en eerlijk roggebrood zoals het hoort.  
-      Gemaakt van grove rogge, langzaam gegaard en zonder concessies.
-    </p>
-  </section>
+    <h2>Bestellen</h2>
+    <form>
+      <label for="naam">Naam</label>
+      <input type="text" id="naam" name="naam" required>
 
-  <section class="product">
-    <h2>Bestelling plaatsen</h2>
+      <label for="email">E-mailadres</label>
+      <input type="email" id="email" name="email" required>
 
-    <form method="post" action="#">
-      <label for="type">Kies uw roggebrood</label>
-      <select id="type" name="type" required>
+      <label for="product">Kies uw roggebrood</label>
+      <select id="product" name="product" required>
         <option value="">— maak een keuze —</option>
         <option value="heel">Heel roggebrood</option>
         <option value="half">Half roggebrood</option>
@@ -132,24 +44,45 @@
       <label for="aantal">Aantal</label>
       <input type="number" id="aantal" name="aantal" min="1" value="1" required>
 
-      <label for="naam">Naam</label>
-      <input type="text" id="naam" name="naam" required>
+      <label for="betaling">Betaalmethode</label>
+      <select id="betaling" name="betaling" required>
+        <option value="">— kies —</option>
+        <option value="ideal">iDEAL</option>
+        <option value="lightning">Lightning</option>
+      </select>
 
-      <label for="email">E-mail</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="adres">Adres</label>
-      <textarea id="adres" name="adres" rows="3" required></textarea>
-
-      <button type="submit">Bestelling plaatsen</button>
+      <button type="submit">Bestelling plaatsen & Betalen</button>
     </form>
+    <div id="response"></div>
   </section>
-
 </main>
-
-<footer>
-  © Ambachtelijk Fries Roggebrood – puur & eerlijk
-</footer>
-
+<script>
+const form = document.querySelector('form');
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const data = {
+    naam: form.naam.value,
+    email: form.email.value,
+    product: form.product.value,
+    aantal: form.aantal.value,
+    betaling: form.betaling.value
+  };
+  const respDiv = document.getElementById('response');
+  respDiv.innerHTML = "Even geduld...";
+  try {
+    const res = await fetch('https://jouw-vercel-backend.vercel.app/api/bestelling', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(data)
+    });
+    const json = await res.json();
+    if(json.url) window.location.href=json.url;
+    else if(json.invoice){
+      respDiv.innerHTML = `<p>Scan de QR-code met je Lightning-wallet:</p>
+                           <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${json.invoice.payment_request}">`;
+    }
+  } catch(err){ respDiv.innerHTML = 'Fout: '+err.message; }
+});
+</script>
 </body>
 </html>
