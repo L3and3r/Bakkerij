@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Bedankt voor je bestelling - Proof of Bread</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500&display=swap');
+  
+  :root { 
+    --grain: #f9f6f0;
+    --dark-rye: #2d1f1a;
+    --crust: #6b4423;
+    --success: #4a7c59;
+  }
+  
+  * { box-sizing: border-box; }
+  
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--grain);
+    color: var(--dark-rye);
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+  
+  .container {
+    background: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(45, 31, 26, 0.1);
+    max-width: 500px;
+    text-align: center;
+  }
+  
+  .success-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--success);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    animation: scaleIn 0.5s ease;
+  }
+  
+  @keyframes scaleIn {
+    from {
+      transform: scale(0);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  .success-icon::after {
+    content: '✓';
+    font-size: 3rem;
+    color: white;
+    font-weight: bold;
+  }
+  
+  h1 {
+    font-family: 'Crimson Pro', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--dark-rye);
+    margin: 0 0 1rem 0;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    color: var(--crust);
+    margin-bottom: 2rem;
+  }
+  
+  .order-id {
+    background: var(--grain);
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1rem;
+    color: var(--dark-rye);
+    margin-bottom: 2rem;
+  }
+  
+  .button {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--crust) 0%, #c17a3a 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: transform 0.2s ease;
+  }
+  
+  .button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .info-box {
+    background: #f0fdf4;
+    border: 2px solid var(--success);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    text-align: left;
+  }
+  
+  .info-box h3 {
+    margin: 0 0 0.5rem 0;
+    font-family: 'Crimson Pro', serif;
+    color: var(--dark-rye);
+    font-size: 1.3rem;
+  }
+  
+  .info-box ul {
+    margin: 0.5rem 0 0 0;
+    padding-left: 1.5rem;
+  }
+  
+  .info-box li {
+    margin-bottom: 0.5rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="success-icon"></div>
+  
+  <h1>Bedankt voor je bestelling!</h1>
+  
+  <p>Je betaling is succesvol ontvangen. Je ontvangt binnen enkele minuten een bevestiging per e-mail.</p>
+  
+  <div class="order-id" id="orderId">
+    Bestelnummer: <strong>Laden...</strong>
+  </div>
+  
+  <a href="/" class="button">Terug naar de webshop</a>
+  
+  <div class="info-box">
+    <h3>Wat gebeurt er nu?</h3>
+    <ul>
+      <li>✉️ Je ontvangt een bevestigingsmail</li>
+      <li>🍞 We beginnen direct met bakken</li>
+      <li>📦 Je roggebrood wordt verstuurd binnen 2 werkdagen</li>
+      <li>🏡 Bezorging binnen 1-2 dagen</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+// Haal order ID uit URL parameter
+const urlParams = new URLSearchParams(window.location.search);
+const orderId = urlParams.get('order');
+
+if (orderId) {
+  document.getElementById('orderId').innerHTML = 
+    `Bestelnummer: <strong>${orderId}</strong>`;
+} else {
+  document.getElementById('orderId').innerHTML = 
+    `<em>Geen bestelnummer beschikbaar</em>`;
+}
+</script>
+</body>
+</html>

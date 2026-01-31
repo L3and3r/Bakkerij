@@ -2,87 +2,684 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<title>Fries Roggebrood – Ambachtelijk</title>
+<title>Proof of Bread – 100% Biologisch Fries Roggebrood</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="100% biologisch Fries roggebrood volgens oud recept. Betaal met Lightning Bitcoin of Tikkie.">
 <style>
-  :root { --bg:#f6f1ea; --dark:#3b2f2f; --accent:#8b5e3c; --light:#fff; }
-  body{margin:0;font-family:Georgia,serif;background:var(--bg);color:var(--dark);}
-  header{background:var(--dark);color:var(--light);text-align:center;padding:2rem;}
-  header h1{margin:0;font-size:2.2rem;letter-spacing:0.05em;}
-  header p{margin-top:0.5rem;font-style:italic;opacity:0.9;}
-  main{max-width:720px;margin:3rem auto;padding:0 1.5rem;}
-  h2{border-bottom:2px solid var(--accent);padding-bottom:0.5rem;margin-bottom:1.5rem;}
-  form{background:var(--light);padding:2rem;border:1px solid #ddd;border-radius:4px;}
-  label{display:block;margin-bottom:0.3rem;font-weight:bold;}
-  input, select{width:100%;padding:0.6rem;margin-bottom:1.2rem;font-size:1rem;border:1px solid #ccc;border-radius:3px;font-family:inherit;}
-  button{background:var(--accent);color:var(--light);border:none;padding:0.8rem 1.5rem;font-size:1rem;cursor:pointer;border-radius:3px;}
-  button:hover{background:#744a2d;}
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500&display=swap');
+  
+  :root { 
+    --grain: #f9f6f0;
+    --dark-rye: #2d1f1a;
+    --crust: #6b4423;
+    --crumb: #dfc9a8;
+    --accent: #c17a3a;
+    --success: #4a7c59;
+    --error: #c24e3a;
+  }
+  
+  * { box-sizing: border-box; }
+  
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--grain);
+    color: var(--dark-rye);
+    line-height: 1.6;
+  }
+  
+  /* Header */
+  header {
+    background: linear-gradient(135deg, var(--dark-rye) 0%, #3d2b23 100%);
+    color: var(--grain);
+    text-align: center;
+    padding: 3rem 1.5rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+  
+  header h1 {
+    margin: 0;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    position: relative;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  }
+  
+  header p {
+    margin: 1rem auto 0;
+    font-size: 1.1rem;
+    font-style: italic;
+    opacity: 0.95;
+    max-width: 500px;
+    position: relative;
+  }
+  
+  /* Main container */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+  
+  /* Product grid */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+  }
+  
+  .product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(45, 31, 26, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(107, 68, 35, 0.1);
+  }
+  
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(45, 31, 26, 0.15);
+  }
+  
+  .product-image {
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(135deg, var(--crumb) 0%, #e8d5b7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .product-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+  
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+  }
+  
+  /* Placeholder text for images */
+  .product-image-placeholder {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--crust);
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .product-info {
+    padding: 1.8rem;
+    position: relative;
+  }
+  
+  .bio-badge {
+    position: absolute;
+    top: -15px;
+    right: 15px;
+    background: linear-gradient(135deg, #4a7c59 0%, #5a9c69 100%);
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(74, 124, 89, 0.3);
+    letter-spacing: 0.03em;
+  }
+  
+  .product-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dark-rye);
+  }
+  
+  .product-weight {
+    color: var(--crust);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+  
+  .product-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--crust);
+    font-family: 'Crimson Pro', serif;
+    margin-bottom: 1rem;
+  }
+  
+  /* Order form section */
+  .order-section {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(45, 31, 26, 0.08);
+    border: 1px solid rgba(107, 68, 35, 0.1);
+  }
+  
+  .order-section h2 {
+    margin: 0 0 2rem 0;
+    font-family: 'Crimson Pro', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-rye);
+    border-bottom: 3px solid var(--crust);
+    padding-bottom: 0.8rem;
+  }
+  
+  form {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark-rye);
+    font-size: 0.95rem;
+  }
+  
+  input, select {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #e5ddd0;
+    border-radius: 8px;
+    font-family: inherit;
+    background: white;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--crust);
+    box-shadow: 0 0 0 3px rgba(107, 68, 35, 0.1);
+  }
+  
+  /* Order summary */
+  .order-summary {
+    background: var(--grain);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    border: 2px dashed var(--crust);
+  }
+  
+  .order-summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+  
+  .order-summary-row.total {
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: 'Crimson Pro', serif;
+    color: var(--crust);
+    padding-top: 0.8rem;
+    border-top: 2px solid var(--crust);
+    margin-top: 0.5rem;
+  }
+  
+  button {
+    background: linear-gradient(135deg, var(--crust) 0%, var(--accent) 100%);
+    color: white;
+    border: none;
+    padding: 1.1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(107, 68, 35, 0.25);
+  }
+  
+  button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(107, 68, 35, 0.35);
+  }
+  
+  button:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* Response messages */
+  #response {
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+    border-radius: 8px;
+    display: none;
+  }
+  
+  #response.show {
+    display: block;
+  }
+  
+  #response.loading {
+    background: #f0f9ff;
+    border: 2px solid #3b82f6;
+    color: #1e40af;
+  }
+  
+  #response.success {
+    background: #f0fdf4;
+    border: 2px solid var(--success);
+    color: #166534;
+  }
+  
+  #response.error {
+    background: #fef2f2;
+    border: 2px solid var(--error);
+    color: #991b1b;
+  }
+  
+  .qr-container {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .qr-container img {
+    border: 4px solid var(--dark-rye);
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+  
+  .payment-status {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #fffbeb;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    color: var(--crust);
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    header h1 {
+      font-size: 2.2rem;
+    }
+    
+    .products {
+      grid-template-columns: 1fr;
+    }
+    
+    .order-section {
+      padding: 1.8rem;
+    }
+  }
 </style>
 </head>
 <body>
 <header>
-  <h1>Fries Roggebrood</h1>
-  <p>Volgens oud recept — langzaam gebakken, puur en eerlijk</p>
+  <h1>Proof of Bread</h1>
+  <p>100% biologisch Fries roggebrood — langzaam gebakken volgens oud recept</p>
+  <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.85;">
+    <span style="background: rgba(255,255,255,0.15); padding: 0.4rem 1rem; border-radius: 20px; display: inline-block;">
+      🌾 100% Biologisch
+    </span>
+  </div>
 </header>
+
 <main>
-  <section>
+  <!-- Product showcase -->
+  <section class="products">
+    <div class="product-card">
+      <div class="product-image">
+        <!-- Replace with: <img src="images/heel-roggebrood.jpg" alt="Heel Fries roggebrood"> -->
+        <div class="product-image-placeholder">Heel<br>Roggebrood</div>
+      </div>
+      <div class="product-info">
+        <div class="bio-badge">🌾 100% BIO</div>
+        <h3>Heel Roggebrood</h3>
+        <p class="product-weight">Ca. 750 gram · 100% biologisch</p>
+        <div class="product-price">€5,00</div>
+      </div>
+    </div>
+    
+    <div class="product-card">
+      <div class="product-image">
+        <!-- Replace with: <img src="images/roggebrood-plakjes.jpg" alt="Fries roggebrood in plakjes"> -->
+        <div class="product-image-placeholder">Half<br>Roggebrood</div>
+      </div>
+      <div class="product-info">
+        <div class="bio-badge">🌾 100% BIO</div>
+        <h3>Half Roggebrood</h3>
+        <p class="product-weight">Ca. 375 gram · 100% biologisch</p>
+        <div class="product-price">€3,00</div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Order form -->
+  <section class="order-section">
     <h2>Bestellen</h2>
-    <form>
-      <label for="naam">Naam</label>
-      <input type="text" id="naam" name="naam" required>
-
-      <label for="email">E-mailadres</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="product">Kies uw roggebrood</label>
-      <select id="product" name="product" required>
-        <option value="">— maak een keuze —</option>
-        <option value="heel">Heel roggebrood</option>
-        <option value="half">Half roggebrood</option>
-      </select>
-
-      <label for="aantal">Aantal</label>
-      <input type="number" id="aantal" name="aantal" min="1" value="1" required>
-
-      <label for="betaling">Betaalmethode</label>
-      <select id="betaling" name="betaling" required>
-        <option value="">— kies —</option>
-        <option value="ideal">iDEAL</option>
-        <option value="lightning">Lightning</option>
-      </select>
-
-      <button type="submit">Bestelling plaatsen & Betalen</button>
+    <form id="orderForm">
+      <div>
+        <label for="naam">Naam *</label>
+        <input type="text" id="naam" name="naam" required>
+      </div>
+      
+      <div>
+        <label for="email">E-mailadres *</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      
+      <div>
+        <label for="product">Kies uw roggebrood *</label>
+        <select id="product" name="product" required>
+          <option value="">— maak een keuze —</option>
+          <option value="heel" data-prijs="5.00" data-gewicht="750">Heel roggebrood (750g) - €5,00</option>
+          <option value="half" data-prijs="3.00" data-gewicht="375">Half roggebrood (375g) - €3,00</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="aantal">Aantal *</label>
+        <input type="number" id="aantal" name="aantal" min="1" max="20" value="1" required>
+      </div>
+      
+      <div>
+        <label for="betaling">Betaalmethode *</label>
+        <select id="betaling" name="betaling" required>
+          <option value="">— kies betaalmethode —</option>
+          <option value="tikkie">Tikkie (je ontvangt een link per email)</option>
+          <option value="lightning">⚡ Lightning Bitcoin</option>
+        </select>
+      </div>
+      
+      <!-- Order summary -->
+      <div class="order-summary" id="orderSummary" style="display: none;">
+        <div class="order-summary-row">
+          <span>Product:</span>
+          <span id="summaryProduct">-</span>
+        </div>
+        <div class="order-summary-row">
+          <span>Aantal:</span>
+          <span id="summaryAantal">-</span>
+        </div>
+        <div class="order-summary-row">
+          <span>Gewicht:</span>
+          <span id="summaryGewicht">-</span>
+        </div>
+        <div class="order-summary-row total">
+          <span>Totaal:</span>
+          <span id="summaryTotaal">€0,00</span>
+        </div>
+      </div>
+      
+      <button type="submit" id="submitBtn">Bestelling plaatsen & Betalen</button>
     </form>
+    
     <div id="response"></div>
   </section>
 </main>
+
+<footer>
+  <p>&copy; 2026 Proof of Bread — 100% biologisch ambachtelijk brood · Powered by ⚡</p>
+</footer>
+
 <script>
-const form = document.querySelector('form');
-form.addEventListener('submit', async e => {
+// Product prices
+const PRIJZEN = {
+  'heel': 5.00,
+  'half': 3.00
+};
+
+const GEWICHTEN = {
+  'heel': 750,
+  'half': 375
+};
+
+// Form elements
+const form = document.getElementById('orderForm');
+const productSelect = document.getElementById('product');
+const aantalInput = document.getElementById('aantal');
+const orderSummary = document.getElementById('orderSummary');
+const responseDiv = document.getElementById('response');
+
+// Update order summary when product or aantal changes
+function updateOrderSummary() {
+  const product = productSelect.value;
+  const aantal = parseInt(aantalInput.value) || 0;
+  
+  if (product && aantal > 0) {
+    const prijs = PRIJZEN[product];
+    const gewicht = GEWICHTEN[product];
+    const totaal = prijs * aantal;
+    const totaalGewicht = gewicht * aantal;
+    
+    document.getElementById('summaryProduct').textContent = 
+      product === 'heel' ? 'Heel roggebrood' : 'Half roggebrood';
+    document.getElementById('summaryAantal').textContent = aantal + 'x';
+    document.getElementById('summaryGewicht').textContent = 
+      totaalGewicht >= 1000 
+        ? (totaalGewicht / 1000).toFixed(1) + ' kg' 
+        : totaalGewicht + ' gram';
+    document.getElementById('summaryTotaal').textContent = 
+      '€' + totaal.toFixed(2).replace('.', ',');
+    
+    orderSummary.style.display = 'block';
+  } else {
+    orderSummary.style.display = 'none';
+  }
+}
+
+productSelect.addEventListener('change', updateOrderSummary);
+aantalInput.addEventListener('input', updateOrderSummary);
+
+// Show response message
+function showResponse(message, type) {
+  responseDiv.innerHTML = message;
+  responseDiv.className = 'show ' + type;
+  responseDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Lightning payment status checking
+let paymentCheckInterval = null;
+
+function checkLightningPayment(paymentHash) {
+  return fetch(`https://bakkerij-one.vercel.app/api/check-payment`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ paymentHash })
+  })
+  .then(res => res.json());
+}
+
+function startPaymentCheck(paymentHash) {
+  let attempts = 0;
+  const maxAttempts = 60; // 5 minutes (5 second intervals)
+  
+  paymentCheckInterval = setInterval(async () => {
+    attempts++;
+    
+    try {
+      const result = await checkLightningPayment(paymentHash);
+      
+      if (result.paid) {
+        clearInterval(paymentCheckInterval);
+        showResponse(
+          `<strong>✓ Betaling ontvangen!</strong><br>
+          Bedankt voor je bestelling. Je ontvangt een bevestiging per e-mail.`,
+          'success'
+        );
+        form.reset();
+        orderSummary.style.display = 'none';
+      } else if (attempts >= maxAttempts) {
+        clearInterval(paymentCheckInterval);
+        showResponse(
+          `<strong>Tijd verlopen</strong><br>
+          De betaling is niet ontvangen. Probeer het opnieuw of neem contact op.`,
+          'error'
+        );
+      }
+    } catch (err) {
+      console.error('Payment check error:', err);
+    }
+  }, 5000); // Check every 5 seconds
+}
+
+// Form submission
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
+  
+  // Clear any existing payment check
+  if (paymentCheckInterval) {
+    clearInterval(paymentCheckInterval);
+  }
+  
+  const product = productSelect.value;
+  const aantal = parseInt(aantalInput.value);
+  const totaal = PRIJZEN[product] * aantal;
+  
   const data = {
-    naam: form.naam.value,
-    email: form.email.value,
-    product: form.product.value,
-    aantal: form.aantal.value,
+    naam: form.naam.value.trim(),
+    email: form.email.value.trim(),
+    product: product,
+    aantal: aantal,
+    prijs: totaal,
+    gewicht: GEWICHTEN[product] * aantal,
     betaling: form.betaling.value
   };
-  const respDiv = document.getElementById('response');
-  respDiv.innerHTML = "Even geduld...";
+  
+  // Disable form
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Bezig met verwerken...';
+  
+  showResponse('Even geduld, we verwerken je bestelling...', 'loading');
+  
   try {
-    const res = await fetch('https://bakkerij-one.vercel.app//api/bestelling', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify(data)
+    const res = await fetch('https://bakkerij-one.vercel.app/api/bestelling', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     });
+    
     const json = await res.json();
-    if(json.url) window.location.href=json.url;
-    else if(json.invoice){
-      respDiv.innerHTML = `<p>Scan de QR-code met je Lightning-wallet:</p>
-                           <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${json.invoice.payment_request}">`;
+    
+    if (!res.ok) {
+      throw new Error(json.error || 'Er is iets misgegaan');
     }
-  } catch(err){ respDiv.innerHTML = 'Fout: '+err.message; }
+    
+    // Handle Tikkie confirmation
+    if (json.success && data.betaling === 'tikkie') {
+      showResponse(
+        `<strong>✓ Bestelling ontvangen!</strong><br>
+        Je ontvangt binnen enkele minuten een Tikkie-link per email op: <strong>${data.email}</strong><br>
+        <small>Bestelnummer: ${json.orderId}</small>`,
+        'success'
+      );
+      form.reset();
+      orderSummary.style.display = 'none';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Bestelling plaatsen & Betalen';
+      return;
+    }
+    
+    // Handle iDEAL redirect (legacy, niet meer gebruikt)
+    if (json.url) {
+      showResponse(
+        'Je wordt doorgestuurd naar iDEAL...',
+        'loading'
+      );
+      setTimeout(() => {
+        window.location.href = json.url;
+      }, 1000);
+      return;
+    }
+    
+    // Handle Lightning invoice
+    if (json.invoice && json.invoice.payment_request) {
+      const qrData = encodeURIComponent(json.invoice.payment_request);
+      showResponse(
+        `<div class="qr-container">
+          <strong>Scan met je Lightning wallet</strong>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrData}" 
+               alt="Lightning QR code">
+          <div class="payment-status">
+            ⚡ Wachten op betaling...<br>
+            <small>Totaal: €${totaal.toFixed(2).replace('.', ',')}</small>
+          </div>
+        </div>`,
+        'loading'
+      );
+      
+      // Start checking for payment
+      if (json.invoice.payment_hash) {
+        startPaymentCheck(json.invoice.payment_hash);
+      }
+      return;
+    }
+    
+    // Fallback success
+    showResponse(
+      'Bestelling ontvangen! Je ontvangt een bevestiging per e-mail.',
+      'success'
+    );
+    form.reset();
+    orderSummary.style.display = 'none';
+    
+  } catch (err) {
+    showResponse(
+      `<strong>Fout bij verwerken bestelling</strong><br>${err.message}`,
+      'error'
+    );
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Bestelling plaatsen & Betalen';
+  }
 });
+
+// Initialize
+updateOrderSummary();
 </script>
 </body>
 </html>

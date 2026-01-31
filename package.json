@@ -1,0 +1,17 @@
+{
+  "name": "fries-roggebrood-webshop",
+  "version": "1.0.0",
+  "description": "Webshop voor Fries roggebrood met iDEAL en Lightning betalingen",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["roggebrood", "webshop", "lightning", "ideal"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+}
