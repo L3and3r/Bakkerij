@@ -525,7 +525,7 @@ function showResponse(message, type) {
 let paymentCheckInterval = null;
 
 function checkLightningPayment(paymentHash) {
-  return fetch(`https://bakkerij-one.vercel.app/api/check-payment`, {
+  return fetch(`/api/bestelling`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ paymentHash })
