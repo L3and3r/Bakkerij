@@ -397,6 +397,39 @@
     </div>
   </section>
   
+  <!-- Ingredients section -->
+  <section style="background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(45, 31, 26, 0.08); border: 1px solid rgba(107, 68, 35, 0.1); margin-bottom: 3rem;">
+    <h2 style="margin: 0 0 1.5rem 0; font-family: 'Crimson Pro', serif; font-size: 2rem; font-weight: 700; color: var(--dark-rye); border-bottom: 3px solid var(--crust); padding-bottom: 0.8rem;">
+      Ingrediënten
+    </h2>
+    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--crust); margin-bottom: 1rem;">
+      Ons roggebrood wordt gemaakt volgens traditioneel recept, met alleen natuurlijke ingrediënten:
+    </p>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
+        🌾 Desem van roggemeel
+      </li>
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
+        🌾 Roggemeel (100% biologisch)
+      </li>
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
+        🌾 Roggevlokken
+      </li>
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
+        🌾 Gebroken rogge
+      </li>
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
+        🧂 Zout
+      </li>
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye);">
+        💧 Water
+      </li>
+    </ul>
+    <p style="margin-top: 1.5rem; font-style: italic; color: var(--crust); font-size: 0.95rem;">
+      Zonder kunstmatige toevoegingen, kleurstoffen of smaakversterkers. Puur ambacht.
+    </p>
+  </section>
+  
   <!-- Order form -->
   <section class="order-section">
     <h2>Bestellen</h2>
@@ -429,8 +462,8 @@
         <label for="betaling">Betaalmethode *</label>
         <select id="betaling" name="betaling" required>
           <option value="">— kies betaalmethode —</option>
-          <option value="tikkie">Tikkie (je ontvangt een link per email)</option>
-          <option value="lightning">⚡ Lightning Bitcoin</option>
+          <option value="tikkie">Tikkie (je ontvangt binnen 24 uur een link per email)</option>
+          <option value="lightning">⚡ Lightning Bitcoin (directe betaling)</option>
         </select>
       </div>
       
@@ -612,9 +645,10 @@ form.addEventListener('submit', async (e) => {
     // Handle Tikkie confirmation
     if (json.success && data.betaling === 'tikkie') {
       showResponse(
-        `<strong>✓ Bestelling ontvangen!</strong><br>
-        Je ontvangt binnen enkele minuten een Tikkie-link per email op: <strong>${data.email}</strong><br>
-        <small>Bestelnummer: ${json.orderId}</small>`,
+        `<strong>✓ Bestelling ontvangen!</strong><br><br>
+        Je ontvangt <strong>binnen 24 uur</strong> een Tikkie-link per email op: <strong>${data.email}</strong><br><br>
+        We verwerken je bestelling handmatig, dus het kan even duren voordat je de betaallink ontvangt.<br>
+        <small style="opacity: 0.8;">Bestelnummer: ${json.orderId}</small>`,
         'success'
       );
       form.reset();
