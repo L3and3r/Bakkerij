@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Ongeldig product' });
     }
 
-    if (!['ideal', 'lightning'].includes(betaling)) {
+    if (!['tikkie', 'lightning'].includes(betaling)) {
       return res.status(400).json({ error: 'Ongeldige betaalmethode' });
     }
 
@@ -55,14 +55,19 @@ export default async function handler(req, res) {
     // await saveOrder(bestelling);
 
     // Handel betaling af op basis van gekozen methode
-    if (betaling === 'ideal') {
-      // iDEAL betaling via Mollie, Stripe, of andere provider
-      const paymentUrl = await createIdealPayment(bestelling);
-      return res.status(200).json({ url: paymentUrl });
+    if (betaling === 'tikkie') {
+      // Stuur email naar bakker met bestelgegevens
+      await sendOrderNotification(bestelling);
+      
+      return res.status(200).json({ 
+        success: true,
+        message: 'Bestelling ontvangen! Je ontvangt binnen enkele minuten een Tikkie-link per email.',
+        orderId: bestelling.id
+      });
     } 
     
     if (betaling === 'lightning') {
-      // Lightning betaling via BTCPay Server, LNbits, of andere provider
+      // Lightning betaling via LNbits
       const invoice = await createLightningInvoice(bestelling);
       return res.status(200).json({ invoice });
     }
@@ -84,50 +89,63 @@ function generateOrderId() {
   return `ORD-${timestamp}-${randomStr}`.toUpperCase();
 }
 
-// iDEAL betaling aanmaken
-async function createIdealPayment(bestelling) {
-  // VOORBEELD met Mollie API
-  // Je hebt een Mollie API key nodig (test of live)
+// Stuur email notificatie naar bakker
+async function sendOrderNotification(bestelling) {
+  // OPTIE 1: Gebruik Resend (gratis tier, simpel)
+  // Je hebt alleen een API key nodig van resend.com
   
-  const MOLLIE_API_KEY = process.env.MOLLIE_API_KEY;
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  const BAKKER_EMAIL = process.env.BAKKER_EMAIL || 'jouw-email@example.com';
   
-  if (!MOLLIE_API_KEY) {
-    throw new Error('Mollie API key niet geconfigureerd');
+  if (!RESEND_API_KEY) {
+    console.log('⚠️ Resend API key niet geconfigureerd - email niet verstuurd');
+    console.log('Bestelling details:', bestelling);
+    return;
   }
 
-  const response = await fetch('https://api.mollie.com/v2/payments', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${MOLLIE_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      amount: {
-        currency: 'EUR',
-        value: bestelling.prijs.toFixed(2)
-      },
-      description: `Roggebrood bestelling #${bestelling.id}`,
-      redirectUrl: `${process.env.VERCEL_URL || 'http://localhost:3000'}/bedankt?order=${bestelling.id}`,
-      webhookUrl: `${process.env.VERCEL_URL || 'http://localhost:3000'}/api/webhook/mollie`,
-      metadata: {
-        orderId: bestelling.id,
-        email: bestelling.email
-      },
-      method: 'ideal'
-    })
-  });
-
-  const payment = await response.json();
+  const productNaam = bestelling.product === 'heel' ? 'Heel roggebrood (750g)' : 'Half roggebrood (375g)';
   
-  if (!response.ok) {
-    console.error('Mollie error:', payment);
-    throw new Error('Kon geen iDEAL betaling aanmaken');
+  try {
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'Proof of Bread <bestellingen@proofofbread.nl>',
+        to: [BAKKER_EMAIL],
+        subject: `🍞 Nieuwe bestelling #${bestelling.id}`,
+        html: `
+          <h2>Nieuwe bestelling ontvangen!</h2>
+          <p><strong>Bestelnummer:</strong> ${bestelling.id}</p>
+          <hr>
+          <p><strong>Klant:</strong> ${bestelling.naam}</p>
+          <p><strong>Email:</strong> ${bestelling.email}</p>
+          <p><strong>Product:</strong> ${productNaam}</p>
+          <p><strong>Aantal:</strong> ${bestelling.aantal}x</p>
+          <p><strong>Totaal gewicht:</strong> ${bestelling.gewicht}g</p>
+          <p><strong>Totaal bedrag:</strong> €${bestelling.prijs.toFixed(2)}</p>
+          <p><strong>Betaalmethode:</strong> Tikkie</p>
+          <hr>
+          <p><strong>📱 Actie vereist:</strong></p>
+          <ol>
+            <li>Maak een Tikkie aan voor €${bestelling.prijs.toFixed(2)}</li>
+            <li>Stuur de Tikkie link naar ${bestelling.email}</li>
+            <li>Vermeld bestelnummer ${bestelling.id} in het bericht</li>
+          </ol>
+        `
+      })
+    });
+
+    if (!response.ok) {
+      console.error('Email verzenden mislukt:', await response.text());
+    } else {
+      console.log('✅ Order notificatie verzonden naar', BAKKER_EMAIL);
+    }
+  } catch (error) {
+    console.error('Error sending email:', error);
   }
-
-  // HIER: Update bestelling met payment ID
-  // await updateOrder(bestelling.id, { molliePaymentId: payment.id });
-
-  return payment._links.checkout.href;
 }
 
 // Lightning invoice aanmaken
