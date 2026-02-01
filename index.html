@@ -525,7 +525,7 @@ function showResponse(message, type) {
 let paymentCheckInterval = null;
 
 function checkLightningPayment(paymentHash) {
-  return fetch(`/api/bestelling`, {
+  return fetch(`/api/check-payment`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ paymentHash })
@@ -597,7 +597,7 @@ form.addEventListener('submit', async (e) => {
   showResponse('Even geduld, we verwerken je bestelling...', 'loading');
   
   try {
-    const res = await fetch('https://bakkerij-one.vercel.app/api/bestelling', {
+    const res = await fetch('/api/bestelling', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
