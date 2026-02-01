@@ -56,8 +56,16 @@ export default async function handler(req, res) {
 
     // Handel betaling af op basis van gekozen methode
     if (betaling === 'tikkie') {
+      console.log('🍞 Tikkie bestelling - start email verzenden');
+      
       // Stuur email naar bakker met bestelgegevens
-      await sendOrderNotification(bestelling);
+      try {
+        await sendOrderNotification(bestelling);
+        console.log('✅ Email verzonden!');
+      } catch (emailError) {
+        console.error('❌ Email error:', emailError);
+        // Ga toch door, zodat klant een bevestiging krijgt
+      }
       
       return res.status(200).json({ 
         success: true,
@@ -97,6 +105,10 @@ async function sendOrderNotification(bestelling) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const BAKKER_EMAIL = process.env.BAKKER_EMAIL || 'jouw-email@example.com';
   
+  console.log('📧 Email functie gestart');
+  console.log('📧 RESEND_API_KEY aanwezig:', !!RESEND_API_KEY);
+  console.log('📧 BAKKER_EMAIL:', BAKKER_EMAIL);
+  
   if (!RESEND_API_KEY) {
     console.log('⚠️ Resend API key niet geconfigureerd - email niet verstuurd');
     console.log('Bestelling details:', bestelling);
@@ -104,6 +116,8 @@ async function sendOrderNotification(bestelling) {
   }
 
   const productNaam = bestelling.product === 'heel' ? 'Heel roggebrood (750g)' : 'Half roggebrood (375g)';
+  
+  console.log('📧 Start Resend API call...');
   
   try {
     const response = await fetch('https://api.resend.com/emails', {
@@ -113,7 +127,7 @@ async function sendOrderNotification(bestelling) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Proof of Bread <bestellingen@proofofbread.nl>',
+        from: 'Proof of Bread <onboarding@resend.dev>',
         to: [BAKKER_EMAIL],
         subject: `🍞 Nieuwe bestelling #${bestelling.id}`,
         html: `
@@ -138,13 +152,20 @@ async function sendOrderNotification(bestelling) {
       })
     });
 
+    console.log('📧 Resend response status:', response.status);
+    
+    const responseText = await response.text();
+    console.log('📧 Resend response:', responseText);
+
     if (!response.ok) {
-      console.error('Email verzenden mislukt:', await response.text());
+      console.error('❌ Email verzenden mislukt:', responseText);
+      throw new Error(`Resend error: ${responseText}`);
     } else {
       console.log('✅ Order notificatie verzonden naar', BAKKER_EMAIL);
     }
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('❌ Error sending email:', error);
+    throw error;
   }
 }
 
