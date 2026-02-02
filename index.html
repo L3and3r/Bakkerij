@@ -359,7 +359,7 @@
 <body>
 <header>
   <h1>Proof of Bread</h1>
-  <p>100% biologisch Fries roggebrood — langzaam gebakken volgens oud recept</p>
+  <p>100% biologisch Fries roggebrood — langzaam gebakken volgens traditioneel recept</p>
   <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.85;">
     <span style="background: rgba(255,255,255,0.15); padding: 0.4rem 1rem; border-radius: 20px; display: inline-block;">
       🌾 100% Biologisch
@@ -368,6 +368,15 @@
 </header>
 
 <main>
+  <!-- Personal intro -->
+  <section style="max-width: 650px; margin: 0 auto 3rem; text-align: center; padding: 0 1.5rem;">
+    <p style="font-size: 1.15rem; line-height: 1.8; color: var(--crust); font-style: italic;">
+      Ik ben Leander en bak ambachtelijk Fries roggebrood in kleine batches. 
+      Elk brood krijgt de tijd die het nodig heeft om te rijzen en te ontwikkelen. 
+      Het resultaat? Een stevig, voedzaam brood met een diepe smaak — precies zoals het hoort.
+    </p>
+  </section>
+  
   <!-- Product showcase -->
   <section class="products">
     <div class="product-card">
@@ -408,7 +417,7 @@
       </p>
     </div>
     <p style="font-size: 1.1rem; line-height: 1.8; color: var(--crust); margin-bottom: 1rem;">
-      Ons roggebrood wordt gemaakt volgens traditioneel recept, met alleen natuurlijke ingrediënten:
+      Ik maak mijn roggebrood volgens traditioneel recept, met alleen natuurlijke ingrediënten:
     </p>
     <ul style="list-style: none; padding: 0; margin: 0;">
       <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
@@ -652,7 +661,7 @@ form.addEventListener('submit', async (e) => {
       showResponse(
         `<strong>✓ Bestelling ontvangen!</strong><br><br>
         Je ontvangt <strong>binnen 24 uur</strong> een Tikkie-link per email op: <strong>${data.email}</strong><br><br>
-        We verwerken je bestelling handmatig, dus het kan even duren voordat je de betaallink ontvangt.<br>
+        Ik verwerk bestellingen handmatig, dus het kan even duren voordat je de betaallink ontvangt.<br>
         <small style="opacity: 0.8;">Bestelnummer: ${json.orderId}</small>`,
         'success'
       );
