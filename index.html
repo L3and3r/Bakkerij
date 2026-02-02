@@ -592,7 +592,7 @@ function checkLightningPayment(paymentHash) {
 
 function startPaymentCheck(paymentHash) {
   let attempts = 0;
-  const maxAttempts = 24; // 2 minuten (5 second intervals)
+  const maxAttempts = 150; // 5 minuten (2 second intervals)
   
   paymentCheckInterval = setInterval(async () => {
     attempts++;
@@ -622,7 +622,7 @@ function startPaymentCheck(paymentHash) {
     } catch (err) {
       console.error('Payment check error:', err);
     }
-  }, 5000); // Check every 5 seconds
+  }, 2000); // Check every 2 seconds - sneller!
 }
 
 // Form submission
