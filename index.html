@@ -592,7 +592,7 @@ function checkLightningPayment(paymentHash) {
 
 function startPaymentCheck(paymentHash) {
   let attempts = 0;
-  const maxAttempts = 60; // 5 minutes (5 second intervals)
+  const maxAttempts = 24; // 2 minuten (5 second intervals)
   
   paymentCheckInterval = setInterval(async () => {
     attempts++;
@@ -612,9 +612,11 @@ function startPaymentCheck(paymentHash) {
       } else if (attempts >= maxAttempts) {
         clearInterval(paymentCheckInterval);
         showResponse(
-          `<strong>Tijd verlopen</strong><br>
-          De betaling is niet ontvangen. Probeer het opnieuw of neem contact op.`,
-          'error'
+          `<strong>⏱️ Betaling verwerken...</strong><br><br>
+          De automatische check is gestopt, maar als je de invoice hebt betaald krijg je gewoon je brood! 
+          Ik zie betalingen direct in mijn systeem en verwerk je bestelling zodra de betaling binnen is.<br><br>
+          <small>Bedankt voor je geduld!</small>`,
+          'loading'
         );
       }
     } catch (err) {
