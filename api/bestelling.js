@@ -1,4 +1,4 @@
-// api/bestelling.js
+// api/bestelling.js - SIMPLIFIED VERSION
 // Vercel serverless function voor het afhandelen van bestellingen
 
 export default async function handler(req, res) {
@@ -51,20 +51,15 @@ export default async function handler(req, res) {
 
     console.log('Nieuwe bestelling:', bestelling);
 
-    // HIER: Bewaar bestelling in database (bijv. Vercel KV, Supabase, etc.)
-    // await saveOrder(bestelling);
-
     // Handel betaling af op basis van gekozen methode
     if (betaling === 'tikkie') {
       console.log('🍞 Tikkie bestelling - start email verzenden');
       
-      // Stuur email naar bakker met bestelgegevens
       try {
         await sendOrderNotification(bestelling);
         console.log('✅ Email verzonden!');
       } catch (emailError) {
         console.error('❌ Email error:', emailError);
-        // Ga toch door, zodat klant een bevestiging krijgt
       }
       
       return res.status(200).json({ 
@@ -75,9 +70,17 @@ export default async function handler(req, res) {
     } 
     
     if (betaling === 'lightning') {
-      // Lightning betaling via LNbits
-      const invoice = await createLightningInvoice(bestelling);
-      return res.status(200).json({ invoice });
+      console.log('⚡ Lightning bestelling - maak invoice');
+      
+      try {
+        const invoice = await createLightningInvoice(bestelling);
+        return res.status(200).json({ invoice });
+      } catch (lightningError) {
+        console.error('❌ Lightning error:', lightningError);
+        return res.status(500).json({ 
+          error: 'Kon geen Lightning invoice aanmaken: ' + lightningError.message 
+        });
+      }
     }
 
     return res.status(400).json({ error: 'Ongeldige betaalmethode' });
@@ -99,9 +102,6 @@ function generateOrderId() {
 
 // Stuur email notificatie naar bakker
 async function sendOrderNotification(bestelling) {
-  // OPTIE 1: Gebruik Resend (gratis tier, simpel)
-  // Je hebt alleen een API key nodig van resend.com
-  
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const BAKKER_EMAIL = process.env.BAKKER_EMAIL || 'jouw-email@example.com';
   
@@ -169,68 +169,89 @@ async function sendOrderNotification(bestelling) {
   }
 }
 
-// Lightning invoice aanmaken via AlbyHub (NWC)
+// Lightning invoice aanmaken via AlbyHub
 async function createLightningInvoice(bestelling) {
-  const NWC_CONNECTION_STRING = process.env.ALBY_NWC_CONNECTION;
+  const NWC_CONNECTION = process.env.ALBY_NWC_CONNECTION;
   
-  if (!NWC_CONNECTION_STRING) {
+  console.log('⚡ Lightning invoice functie gestart');
+  console.log('⚡ NWC_CONNECTION aanwezig:', !!NWC_CONNECTION);
+  
+  if (!NWC_CONNECTION) {
     throw new Error('AlbyHub NWC connection niet geconfigureerd');
-  }
-
-  // Parse NWC connection string
-  const url = new URL(NWC_CONNECTION_STRING);
-  const pubkey = url.hostname;
-  const relay = url.searchParams.get('relay');
-  const secret = url.searchParams.get('secret');
-
-  if (!pubkey || !relay || !secret) {
-    throw new Error('Ongeldige NWC connection string');
   }
 
   // Converteer EUR naar satoshis
   const satsAmount = await convertEurToSats(bestelling.prijs);
+  console.log(`⚡ ${bestelling.prijs} EUR = ${satsAmount} sats`);
 
-  // Create invoice via NWC (simplified - using Alby's HTTP API as fallback)
-  // For production, you'd want to use proper NWC library or Alby's REST API
+  // Voor AlbyHub gebruiken we de Alby Wallet API met de LUD16 address
+  // Haal LUD16 uit connection string
+  const connectionUrl = new URL(NWC_CONNECTION);
+  const lud16 = connectionUrl.searchParams.get('lud16');
   
+  console.log('⚡ LUD16 address:', lud16);
+  
+  if (!lud16) {
+    throw new Error('Geen LUD16 address in connection string');
+  }
+
+  // Gebruik LNURL om invoice te maken
   try {
-    // Using Alby's API endpoint (simpler than full NWC implementation)
-    const response = await fetch('https://api.getalby.com/invoices', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${secret}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        amount: satsAmount,
-        description: `Roggebrood bestelling #${bestelling.id}`
-      })
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      console.error('AlbyHub API error:', error);
-      throw new Error('Kon geen Lightning invoice aanmaken');
-    }
-
-    const invoice = await response.json();
+    // Split LUD16 (username@domain)
+    const [username, domain] = lud16.split('@');
     
-    return {
-      payment_request: invoice.payment_request,
-      payment_hash: invoice.payment_hash
-    };
+    // Haal LNURL endpoint op
+    const lnurlResponse = await fetch(`https://${domain}/.well-known/lnurlp/${username}`);
+    
+    if (!lnurlResponse.ok) {
+      throw new Error('LNURL endpoint niet bereikbaar');
+    }
+    
+    const lnurlData = await lnurlResponse.json();
+    console.log('⚡ LNURL data ontvangen');
+    
+    // Maak invoice via callback
+    const callbackUrl = new URL(lnurlData.callback);
+    callbackUrl.searchParams.set('amount', satsAmount * 1000); // millisats
+    
+    const invoiceResponse = await fetch(callbackUrl.toString());
+    
+    if (!invoiceResponse.ok) {
+      const errorText = await invoiceResponse.text();
+      console.error('⚡ Invoice creation failed:', errorText);
+      throw new Error('Kon geen invoice maken');
+    }
+    
+    const invoiceData = await invoiceResponse.json();
+    console.log('⚡ Invoice aangemaakt!');
+    
+    if (invoiceData.pr) {
+      return {
+        payment_request: invoiceData.pr,
+        payment_hash: invoiceData.payment_hash || 'unknown'
+      };
+    }
+    
+    throw new Error('Geen payment request in response');
+    
   } catch (error) {
-    console.error('AlbyHub error:', error);
-    throw error;
+    console.error('⚡ AlbyHub Lightning error:', error);
+    throw new Error(`Lightning fout: ${error.message}`);
   }
 }
 
 // Helper: Converteer EUR naar satoshis
 async function convertEurToSats(eurAmount) {
-  // Gebruik een Bitcoin exchange rate API
-  const response = await fetch('https://blockchain.info/ticker');
-  const rates = await response.json();
-  const btcPerEur = 1 / rates.EUR.last;
-  const sats = Math.round(eurAmount * btcPerEur * 100000000); // 1 BTC = 100M sats
-  return sats;
+  try {
+    const response = await fetch('https://blockchain.info/ticker');
+    const rates = await response.json();
+    const btcPerEur = 1 / rates.EUR.last;
+    const sats = Math.round(eurAmount * btcPerEur * 100000000);
+    return sats;
+  } catch (error) {
+    console.error('Exchange rate fetch error:', error);
+    // Fallback: assume 1 BTC = 50000 EUR
+    const sats = Math.round((eurAmount / 50000) * 100000000);
+    return sats;
+  }
 }
