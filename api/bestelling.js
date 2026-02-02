@@ -169,49 +169,60 @@ async function sendOrderNotification(bestelling) {
   }
 }
 
-// Lightning invoice aanmaken
+// Lightning invoice aanmaken via AlbyHub (NWC)
 async function createLightningInvoice(bestelling) {
-  // VOORBEELD met LNbits API
-  // Je hebt een LNbits instance en API key nodig
+  const NWC_CONNECTION_STRING = process.env.ALBY_NWC_CONNECTION;
   
-  const LNBITS_URL = process.env.LNBITS_URL; // bijv. https://legend.lnbits.com
-  const LNBITS_API_KEY = process.env.LNBITS_API_KEY;
-  
-  if (!LNBITS_URL || !LNBITS_API_KEY) {
-    throw new Error('LNbits niet geconfigureerd');
+  if (!NWC_CONNECTION_STRING) {
+    throw new Error('AlbyHub NWC connection niet geconfigureerd');
   }
 
-  // Converteer EUR naar satoshis (je hebt een exchange rate API nodig)
+  // Parse NWC connection string
+  const url = new URL(NWC_CONNECTION_STRING);
+  const pubkey = url.hostname;
+  const relay = url.searchParams.get('relay');
+  const secret = url.searchParams.get('secret');
+
+  if (!pubkey || !relay || !secret) {
+    throw new Error('Ongeldige NWC connection string');
+  }
+
+  // Converteer EUR naar satoshis
   const satsAmount = await convertEurToSats(bestelling.prijs);
 
-  const response = await fetch(`${LNBITS_URL}/api/v1/payments`, {
-    method: 'POST',
-    headers: {
-      'X-Api-Key': LNBITS_API_KEY,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      out: false,
-      amount: satsAmount,
-      memo: `Roggebrood bestelling #${bestelling.id}`,
-      webhook: `${process.env.VERCEL_URL || 'http://localhost:3000'}/api/webhook/lightning`
-    })
-  });
-
-  const invoice = await response.json();
+  // Create invoice via NWC (simplified - using Alby's HTTP API as fallback)
+  // For production, you'd want to use proper NWC library or Alby's REST API
   
-  if (!response.ok) {
-    console.error('LNbits error:', invoice);
-    throw new Error('Kon geen Lightning invoice aanmaken');
+  try {
+    // Using Alby's API endpoint (simpler than full NWC implementation)
+    const response = await fetch('https://api.getalby.com/invoices', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${secret}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        amount: satsAmount,
+        description: `Roggebrood bestelling #${bestelling.id}`
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error('AlbyHub API error:', error);
+      throw new Error('Kon geen Lightning invoice aanmaken');
+    }
+
+    const invoice = await response.json();
+    
+    return {
+      payment_request: invoice.payment_request,
+      payment_hash: invoice.payment_hash
+    };
+  } catch (error) {
+    console.error('AlbyHub error:', error);
+    throw error;
   }
-
-  // HIER: Bewaar payment hash in database
-  // await updateOrder(bestelling.id, { 
-  //   lightningPaymentHash: invoice.payment_hash,
-  //   lightningPaymentRequest: invoice.payment_request 
-  // });
-
-  return invoice;
 }
 
 // Helper: Converteer EUR naar satoshis
