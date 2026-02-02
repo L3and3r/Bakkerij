@@ -701,21 +701,22 @@ form.addEventListener('submit', async (e) => {
       const qrData = encodeURIComponent(json.invoice.payment_request);
       showResponse(
         `<div class="qr-container">
-          <strong>Scan met je Lightning wallet</strong>
+          <strong>⚡ Scan en betaal met je Lightning wallet</strong>
           <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrData}" 
                alt="Lightning QR code">
-          <div class="payment-status">
-            ⚡ Wachten op betaling...<br>
-            <small>Totaal: €${totaal.toFixed(2).replace('.', ',')}</small>
+          <div class="payment-status" style="text-align: left; padding: 1rem;">
+            <strong>Totaal: €${totaal.toFixed(2).replace('.', ',')}</strong><br><br>
+            ✅ Ik zie Lightning betalingen <strong>direct</strong> in mijn AlbyHub<br>
+            ✅ Je bestelling wordt meteen verwerkt zodra ik de betaling zie<br>
+            ✅ Je kunt deze pagina sluiten zodra je wallet bevestiging geeft<br><br>
+            <small style="opacity: 0.8;">Lightning betalingen zijn instant - ik krijg direct een notificatie!</small>
           </div>
         </div>`,
-        'loading'
+        'success'
       );
       
-      // Start checking for payment
-      if (json.invoice.payment_hash) {
-        startPaymentCheck(json.invoice.payment_hash);
-      }
+      // No auto-checking - merchant sees payment instantly in AlbyHub anyway
+      // This is more honest than fake checking that doesn't really work
       return;
     }
     
