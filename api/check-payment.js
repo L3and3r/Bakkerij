@@ -1,5 +1,5 @@
 // api/check-payment.js
-// Vercel serverless function voor het checken van Lightning betalingsstatus
+// Vercel serverless function voor het checken van Lightning betalingsstatus via AlbyHub
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -13,34 +13,34 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Payment hash is verplicht' });
     }
 
-    const LNBITS_URL = process.env.LNBITS_URL;
-    const LNBITS_API_KEY = process.env.LNBITS_API_KEY;
+    const NWC_CONNECTION_STRING = process.env.ALBY_NWC_CONNECTION;
 
-    if (!LNBITS_URL || !LNBITS_API_KEY) {
-      return res.status(500).json({ error: 'LNbits niet geconfigureerd' });
+    if (!NWC_CONNECTION_STRING) {
+      return res.status(500).json({ error: 'AlbyHub niet geconfigureerd' });
     }
 
-    // Check payment status via LNbits
-    const response = await fetch(`${LNBITS_URL}/api/v1/payments/${paymentHash}`, {
+    // Parse connection for secret
+    const url = new URL(NWC_CONNECTION_STRING);
+    const secret = url.searchParams.get('secret');
+
+    // Check payment status via Alby API
+    const response = await fetch(`https://api.getalby.com/invoices/${paymentHash}`, {
       headers: {
-        'X-Api-Key': LNBITS_API_KEY
+        'Authorization': `Bearer ${secret}`
       }
     });
-
-    const payment = await response.json();
 
     if (!response.ok) {
       return res.status(404).json({ error: 'Betaling niet gevonden', paid: false });
     }
 
+    const payment = await response.json();
+
     // Check of betaling is voldaan
-    const isPaid = payment.paid === true;
+    const isPaid = payment.settled === true || payment.state === 'SETTLED';
 
     if (isPaid) {
-      // HIER: Update bestelling status in database
-      // await updateOrderStatus(paymentHash, 'paid');
-      // await sendConfirmationEmail(order);
-      console.log('Lightning betaling ontvangen:', paymentHash);
+      console.log('Lightning betaling ontvangen via AlbyHub:', paymentHash);
     }
 
     return res.status(200).json({ 
