@@ -78,7 +78,6 @@ export default async function handler(req, res) {
         // Don't fail webhook if email fails
       }
     }
-    }
 
     // Always return 200 OK so Alby doesn't retry
     return res.status(200).send('OK');
