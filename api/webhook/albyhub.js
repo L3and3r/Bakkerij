@@ -179,6 +179,8 @@ async function sendLightningPaymentEmails(webhook) {
           <p><strong>Aantal:</strong> ${orderData.aantal}x</p>
           <p><strong>Totaal gewicht:</strong> ${orderData.gewicht}g</p>
           <p><strong>Betaald:</strong> €${orderData.prijs.toFixed(2)} (${amountSats} sats) ⚡</p>
+          ${orderData.voorkeursdatum ? `<p><strong>Jouw voorkeursdatum:</strong> ${new Date(orderData.voorkeursdatum).toLocaleDateString('nl-NL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>` : ''}
+          ${orderData.opmerkingen ? `<p><strong>Je opmerkingen:</strong><br>${orderData.opmerkingen.replace(/\n/g, '<br>')}</p>` : ''}
           <hr>
           <p>Ik neem <strong>binnen 24 uur</strong> contact met je op om de levering af te spreken.</p>
           <p>Met vriendelijke groet,<br>
@@ -213,6 +215,8 @@ async function sendLightningPaymentEmails(webhook) {
           <p><strong>Aantal:</strong> ${orderData.aantal}x</p>
           <p><strong>Totaal gewicht:</strong> ${orderData.gewicht}g</p>
           <p><strong>Betaald:</strong> €${orderData.prijs.toFixed(2)} (${amountSats} sats) ⚡</p>
+          ${orderData.voorkeursdatum ? `<p><strong>Voorkeursdatum levering:</strong> ${new Date(orderData.voorkeursdatum).toLocaleDateString('nl-NL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>` : ''}
+          ${orderData.opmerkingen ? `<p><strong>Opmerkingen klant:</strong><br>${orderData.opmerkingen.replace(/\n/g, '<br>')}</p>` : ''}
           <hr>
           <p><strong>Actie vereist:</strong></p>
           <p>Neem binnen 24 uur contact op met ${orderData.naam} via ${orderData.email} om levering af te spreken.</p>
