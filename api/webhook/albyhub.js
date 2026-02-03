@@ -69,6 +69,15 @@ export default async function handler(req, res) {
       
       console.log(`✅ PAYMENT CONFIRMED IN REDIS: ${paymentHash}`);
       console.log(`💰 Amount: ${webhook.amount || 'unknown'} sats`);
+      
+      // Send notification emails
+      try {
+        await sendLightningPaymentEmails(webhook);
+      } catch (emailError) {
+        console.error('❌ Email error:', emailError);
+        // Don't fail webhook if email fails
+      }
+    }
     }
 
     // Always return 200 OK so Alby doesn't retry
@@ -78,5 +87,127 @@ export default async function handler(req, res) {
     console.error('❌ Webhook error:', error);
     // Still return 200 to prevent retries
     return res.status(200).send('OK');
+  }
+}
+
+// Send emails when Lightning payment is confirmed
+async function sendLightningPaymentEmails(webhook) {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  const BAKKER_EMAIL = process.env.BAKKER_EMAIL;
+  
+  if (!RESEND_API_KEY) {
+    console.log('⚠️ No Resend API key - skipping emails');
+    return;
+  }
+
+  const amountSats = webhook.amount || webhook.value;
+  const amountEur = (webhook.fiat_in_cents / 100).toFixed(2);
+  const paymentRequest = webhook.payment_request;
+  
+  // Retrieve order details from Redis
+  let orderData = null;
+  if (paymentRequest) {
+    try {
+      const orderJson = await kv.get(`order:${paymentRequest}`);
+      if (orderJson) {
+        orderData = JSON.parse(orderJson);
+        console.log('📦 Order data retrieved:', orderData);
+      }
+    } catch (err) {
+      console.log('⚠️ Could not retrieve order data:', err);
+    }
+  }
+  
+  if (!orderData) {
+    console.log('⚠️ No order data found - sending basic notification only');
+    // Send basic baker notification without customer details
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'Proof of Bread <onboarding@resend.dev>',
+        to: [BAKKER_EMAIL],
+        subject: `⚡ Lightning betaling ontvangen - €${amountEur}`,
+        html: `
+          <h2>⚡ Lightning betaling ontvangen!</h2>
+          <p><strong>Bedrag:</strong> ${amountSats} sats (€${amountEur})</p>
+          <p><strong>Status:</strong> Betaald ✅</p>
+          <p><em>Klantgegevens niet beschikbaar - check AlbyHub voor details.</em></p>
+        `
+      })
+    });
+    return;
+  }
+  
+  const productNaam = orderData.product === 'heel' ? 'Heel roggebrood (750g)' : 'Half roggebrood (375g)';
+  
+  // Email to customer
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'Proof of Bread <onboarding@resend.dev>',
+        to: [orderData.email],
+        subject: '✅ Betaling ontvangen - Proof of Bread',
+        html: `
+          <h2>Bedankt voor je bestelling!</h2>
+          <p>Beste ${orderData.naam},</p>
+          <p>Je Lightning betaling is succesvol ontvangen. Hieronder vind je de details van je bestelling:</p>
+          <hr>
+          <p><strong>Product:</strong> ${productNaam}</p>
+          <p><strong>Aantal:</strong> ${orderData.aantal}x</p>
+          <p><strong>Totaal gewicht:</strong> ${orderData.gewicht}g</p>
+          <p><strong>Betaald:</strong> €${orderData.prijs.toFixed(2)} (${amountSats} sats) ⚡</p>
+          <hr>
+          <p>Ik neem <strong>binnen 24 uur</strong> contact met je op om de levering af te spreken.</p>
+          <p>Met vriendelijke groet,<br>
+          Leander<br>
+          Proof of Bread</p>
+        `
+      })
+    });
+    
+    console.log('📧 Customer confirmation sent to', orderData.email);
+  } catch (error) {
+    console.error('❌ Failed to send customer email:', error);
+  }
+  
+  // Email to baker
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'Proof of Bread <onboarding@resend.dev>',
+        to: [BAKKER_EMAIL],
+        subject: `⚡ Lightning bestelling betaald - ${orderData.naam}`,
+        html: `
+          <h2>⚡ Lightning bestelling betaald!</h2>
+          <p><strong>Klant:</strong> ${orderData.naam}</p>
+          <p><strong>Email:</strong> ${orderData.email}</p>
+          <p><strong>Product:</strong> ${productNaam}</p>
+          <p><strong>Aantal:</strong> ${orderData.aantal}x</p>
+          <p><strong>Totaal gewicht:</strong> ${orderData.gewicht}g</p>
+          <p><strong>Betaald:</strong> €${orderData.prijs.toFixed(2)} (${amountSats} sats) ⚡</p>
+          <hr>
+          <p><strong>Actie vereist:</strong></p>
+          <p>Neem binnen 24 uur contact op met ${orderData.naam} via ${orderData.email} om levering af te spreken.</p>
+        `
+      })
+    });
+    
+    console.log('📧 Baker notification sent');
+  } catch (error) {
+    console.error('❌ Failed to send baker email:', error);
   }
 }
