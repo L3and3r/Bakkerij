@@ -32,7 +32,8 @@ export default async function handler(req, res) {
 
     const webhook = req.body;
     
-    console.log('⚡ AlbyHub webhook received:', JSON.stringify(webhook, null, 2));
+    console.log('⚡ AlbyHub webhook received!');
+    console.log('📦 Full webhook body:', JSON.stringify(webhook, null, 2));
 
     // Extract payment info from webhook
     // Alby sends different formats, check common fields
@@ -41,13 +42,16 @@ export default async function handler(req, res) {
                         webhook.hash ||
                         webhook.payment_preimage;
     
+    console.log('🔑 Extracted payment_hash:', paymentHash);
+    console.log('🔑 Available keys in webhook:', Object.keys(webhook));
+    
     const settled = webhook.settled === true || 
                     webhook.state === 'SETTLED' ||
                     webhook.status === 'settled' ||
                     webhook.type === 'invoice.incoming.settled';
 
     if (!paymentHash) {
-      console.log('⚠️ No payment hash in webhook');
+      console.log('⚠️ No payment hash in webhook - available fields:', Object.keys(webhook));
       return res.status(200).send('OK');
     }
 
