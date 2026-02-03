@@ -77,13 +77,13 @@ export default async function handler(req, res) {
       try {
         const invoice = await createLightningInvoice(bestelling);
         
-        // Store invoice by payment_request AND payment_hash in Redis
+        // ALWAYS store by payment_request (most reliable)
         if (invoice.payment_request) {
-          // Store by invoice (always reliable)
           await kv.set(`invoice:${invoice.payment_request}`, 'pending', { ex: 3600 });
-          console.log('💾 Invoice stored in Redis');
+          console.log('💾 Invoice stored in Redis:', invoice.payment_request.substring(0, 50) + '...');
         }
         
+        // Also store by payment_hash if available (from LNURL response)
         if (invoice.payment_hash && invoice.payment_hash !== 'unknown') {
           await kv.set(`payment:${invoice.payment_hash}`, 'pending', { ex: 3600 });
           console.log('💾 Payment hash stored in Redis:', invoice.payment_hash);
@@ -241,12 +241,11 @@ async function createLightningInvoice(bestelling) {
     console.log('⚡ Invoice aangemaakt!');
     
     if (invoiceData.pr) {
-      // Return invoice with additional metadata for checking
+      // Return invoice with the payment_request
+      // Don't try to extract hash - just return what we have
       return {
         payment_request: invoiceData.pr,
-        payment_hash: invoiceData.payment_hash || extractHashFromBolt11(invoiceData.pr),
-        verify_url: invoiceData.verify_url || null,
-        expires_at: invoiceData.expires_at || null
+        payment_hash: invoiceData.payment_hash || null
       };
     }
     
@@ -255,19 +254,6 @@ async function createLightningInvoice(bestelling) {
   } catch (error) {
     console.error('⚡ AlbyHub Lightning error:', error);
     throw new Error(`Lightning fout: ${error.message}`);
-  }
-}
-
-// Helper: Extract payment hash from BOLT11 invoice string
-function extractHashFromBolt11(bolt11) {
-  try {
-    // BOLT11 invoices encode the payment hash
-    // This is a simplified extraction - in production use a proper library
-    // For now, we'll just return a placeholder
-    return bolt11.substring(bolt11.length - 52, bolt11.length - 4);
-  } catch (error) {
-    console.error('Could not extract hash from bolt11');
-    return 'unknown';
   }
 }
 
