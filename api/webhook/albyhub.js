@@ -58,8 +58,15 @@ export default async function handler(req, res) {
     console.log(`📋 Payment hash: ${paymentHash}, Settled: ${settled}`);
 
     if (settled) {
-      // INSTANT UPDATE - mark as paid in Redis!
-      await kv.set(`payment:${paymentHash}`, 'paid', { ex: 86400 }); // keep for 24h
+      // Mark as paid using BOTH payment_hash AND payment_request
+      await kv.set(`payment:${paymentHash}`, 'paid', { ex: 86400 });
+      
+      // Also mark by payment_request if available
+      if (webhook.payment_request) {
+        await kv.set(`invoice:${webhook.payment_request}`, 'paid', { ex: 86400 });
+        console.log(`✅ PAYMENT CONFIRMED - marked by invoice`);
+      }
+      
       console.log(`✅ PAYMENT CONFIRMED IN REDIS: ${paymentHash}`);
       console.log(`💰 Amount: ${webhook.amount || 'unknown'} sats`);
     }
