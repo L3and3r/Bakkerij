@@ -1,6 +1,8 @@
 // api/bestelling.js - SIMPLIFIED VERSION
 // Vercel serverless function voor het afhandelen van bestellingen
 
+import { kv } from '@vercel/kv';
+
 export default async function handler(req, res) {
   // Alleen POST requests toestaan
   if (req.method !== 'POST') {
@@ -72,11 +74,15 @@ export default async function handler(req, res) {
     if (betaling === 'lightning') {
       console.log('⚡ Lightning bestelling - maak invoice');
       
-      // Set timestamp for payment checking
-      global.invoiceCreatedTime = Date.now();
-      
       try {
         const invoice = await createLightningInvoice(bestelling);
+        
+        // Store in Redis as 'pending'
+        if (invoice.payment_hash && invoice.payment_hash !== 'unknown') {
+          await kv.set(`payment:${invoice.payment_hash}`, 'pending', { ex: 3600 }); // expire after 1 hour
+          console.log('💾 Payment hash stored in Redis:', invoice.payment_hash);
+        }
+        
         return res.status(200).json({ invoice });
       } catch (lightningError) {
         console.error('❌ Lightning error:', lightningError);
