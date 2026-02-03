@@ -381,9 +381,7 @@
   <!-- Personal intro -->
   <section style="max-width: 650px; margin: 0 auto 3rem; text-align: center; padding: 0 1.5rem;">
     <p style="font-size: 1.15rem; line-height: 1.8; color: var(--crust); font-style: italic;">
-      Ik ben Leander en bak ambachtelijk Fries roggebrood in kleine batches. 
-      Elk brood krijgt de tijd die het nodig heeft om te rijzen en te ontwikkelen. 
-      Het resultaat? Een stevig, voedzaam brood met een diepe smaak — precies zoals het hoort.
+      Ik ben Leander en ik bak ambachtelijk Fries roggebrood. Elk brood krijgt de tijd die het nodig heeft om goed te rijzen en op smaak te komen. Dat proef je terug: stevig, voedzaam en vol van smaak — zoals roggebrood bedoeld is.
     </p>
   </section>
   
@@ -704,19 +702,18 @@ form.addEventListener('submit', async (e) => {
           <strong>⚡ Scan en betaal met je Lightning wallet</strong>
           <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrData}" 
                alt="Lightning QR code">
-          <div class="payment-status" style="text-align: left; padding: 1rem;">
-            <strong>Totaal: €${totaal.toFixed(2).replace('.', ',')}</strong><br><br>
-            ✅ Ik zie Lightning betalingen <strong>direct</strong> in mijn AlbyHub<br>
-            ✅ Je bestelling wordt meteen verwerkt zodra ik de betaling zie<br>
-            ✅ Je kunt deze pagina sluiten zodra je wallet bevestiging geeft<br><br>
-            <small style="opacity: 0.8;">Lightning betalingen zijn instant - ik krijg direct een notificatie!</small>
+          <div class="payment-status">
+            ⚡ Wachten op betaling...<br>
+            <small>Totaal: €${totaal.toFixed(2).replace('.', ',')}</small>
           </div>
         </div>`,
-        'success'
+        'loading'
       );
       
-      // No auto-checking - merchant sees payment instantly in AlbyHub anyway
-      // This is more honest than fake checking that doesn't really work
+      // Start checking - now with Redis this actually works instantly!
+      if (json.invoice.payment_hash) {
+        startPaymentCheck(json.invoice.payment_hash);
+      }
       return;
     }
     
