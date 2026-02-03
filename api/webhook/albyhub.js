@@ -115,7 +115,12 @@ async function sendLightningPaymentEmails(webhook) {
       console.log('📦 Raw order data from Redis:', orderJson);
       
       if (orderJson) {
-        orderData = JSON.parse(orderJson);
+        // Check if it's already an object or a string
+        if (typeof orderJson === 'string') {
+          orderData = JSON.parse(orderJson);
+        } else {
+          orderData = orderJson; // Already an object
+        }
         console.log('📦 Order data retrieved:', orderData);
       } else {
         console.log('📦 No order data in Redis for this payment_request');
