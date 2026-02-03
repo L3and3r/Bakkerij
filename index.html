@@ -43,7 +43,7 @@
     background: linear-gradient(135deg, var(--dark-rye) 0%, #3d2b23 100%);
     color: var(--grain);
     text-align: center;
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 1.5rem;
     position: relative;
     overflow: hidden;
   }
@@ -60,13 +60,22 @@
   }
   
   .header-logo {
-    max-width: 300px;
-    width: 100%;
+    max-width: 450px;
+    width: 90%;
     height: auto;
     margin: 0 auto;
     display: block;
     position: relative;
-    filter: drop-shadow(2px 4px 12px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
+    border-radius: 50%;
+    padding: 1.5rem;
+    background: radial-gradient(circle, rgba(249, 246, 240, 0.15) 0%, rgba(249, 246, 240, 0.05) 100%);
+  }
+  
+  @media (max-width: 600px) {
+    .header-logo {
+      max-width: 320px;
+    }
   }
   
   header h1 {
@@ -81,7 +90,7 @@
   }
   
   header p {
-    margin: 1.5rem auto 0;
+    margin: 2rem auto 0;
     font-size: 1.1rem;
     font-style: italic;
     opacity: 0.95;
