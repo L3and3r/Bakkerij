@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { naam, email, product, aantal, prijs, gewicht, betaling } = req.body;
+    const { naam, email, product, aantal, prijs, gewicht, betaling, voorkeursdatum, opmerkingen } = req.body;
 
     // Validatie
     if (!naam || !email || !product || !aantal || !betaling) {
@@ -47,6 +47,8 @@ export default async function handler(req, res) {
       prijs,
       gewicht,
       betaling,
+      voorkeursdatum: voorkeursdatum || null,
+      opmerkingen: opmerkingen || null,
       status: 'pending',
       createdAt: new Date().toISOString()
     };
