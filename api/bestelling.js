@@ -77,9 +77,15 @@ export default async function handler(req, res) {
       try {
         const invoice = await createLightningInvoice(bestelling);
         
-        // Store in Redis as 'pending'
+        // Store invoice by payment_request AND payment_hash in Redis
+        if (invoice.payment_request) {
+          // Store by invoice (always reliable)
+          await kv.set(`invoice:${invoice.payment_request}`, 'pending', { ex: 3600 });
+          console.log('💾 Invoice stored in Redis');
+        }
+        
         if (invoice.payment_hash && invoice.payment_hash !== 'unknown') {
-          await kv.set(`payment:${invoice.payment_hash}`, 'pending', { ex: 3600 }); // expire after 1 hour
+          await kv.set(`payment:${invoice.payment_hash}`, 'pending', { ex: 3600 });
           console.log('💾 Payment hash stored in Redis:', invoice.payment_hash);
         }
         
