@@ -10,7 +10,9 @@
   "keywords": ["roggebrood", "webshop", "lightning", "ideal"],
   "author": "",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@vercel/kv": "^1.0.1"
+  },
   "devDependencies": {
     "vercel": "^33.0.0"
   }
