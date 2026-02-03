@@ -43,7 +43,7 @@
     background: linear-gradient(135deg, var(--dark-rye) 0%, #3d2b23 100%);
     color: var(--grain);
     text-align: center;
-    padding: 3rem 1.5rem 2.5rem;
+    padding: 2rem 1.5rem;
     position: relative;
     overflow: hidden;
   }
@@ -59,6 +59,16 @@
     opacity: 0.4;
   }
   
+  .header-logo {
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+    filter: drop-shadow(2px 4px 12px rgba(0,0,0,0.4));
+  }
+  
   header h1 {
     margin: 0;
     font-family: 'Crimson Pro', Georgia, serif;
@@ -67,10 +77,11 @@
     letter-spacing: 0.02em;
     position: relative;
     text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    display: none; /* Hidden when logo is shown */
   }
   
   header p {
-    margin: 1rem auto 0;
+    margin: 1.5rem auto 0;
     font-size: 1.1rem;
     font-style: italic;
     opacity: 0.95;
@@ -221,7 +232,7 @@
     font-size: 0.95rem;
   }
   
-  input, select {
+  input, select, textarea {
     width: 100%;
     padding: 0.9rem 1rem;
     font-size: 1rem;
@@ -232,10 +243,21 @@
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
   
-  input:focus, select:focus {
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+  
+  input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--crust);
     box-shadow: 0 0 0 3px rgba(107, 68, 35, 0.1);
+  }
+  
+  small {
+    font-size: 0.875rem;
+    color: var(--crust);
+    opacity: 0.9;
   }
   
   /* Order summary */
@@ -368,13 +390,8 @@
 </head>
 <body>
 <header>
-  <h1>Proof of Bread</h1>
+  <img src="Logo.png" alt="Proof of Bread" class="header-logo">
   <p>100% biologisch Fries roggebrood — langzaam gebakken volgens traditioneel recept</p>
-  <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.85;">
-    <span style="background: rgba(255,255,255,0.15); padding: 0.4rem 1rem; border-radius: 20px; display: inline-block;">
-      🌾 100% Biologisch
-    </span>
-  </div>
 </header>
 
 <main>
@@ -395,7 +412,7 @@
         <div class="product-image-placeholder">Heel<br>Roggebrood</div>
       </div>
       <div class="product-info">
-        <div class="bio-badge">🌾 100% BIO</div>
+        <div class="bio-badge">100% BIO</div>
         <h3>Heel Roggebrood</h3>
         <p class="product-weight">Ca. 750 gram · 100% biologisch</p>
         <div class="product-price">€5,00</div>
@@ -408,7 +425,7 @@
         <div class="product-image-placeholder">Half<br>Roggebrood</div>
       </div>
       <div class="product-info">
-        <div class="bio-badge">🌾 100% BIO</div>
+        <div class="bio-badge">100% BIO</div>
         <h3>Half Roggebrood</h3>
         <p class="product-weight">Ca. 375 gram · 100% biologisch</p>
         <div class="product-price">€3,00</div>
@@ -423,7 +440,7 @@
     </h2>
     <div style="background: #f0fdf4; border-left: 4px solid #4a7c59; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border-radius: 4px;">
       <p style="margin: 0; font-weight: 600; color: #166534; font-size: 1.05rem;">
-        🌾 Alle ingrediënten zijn 100% biologisch
+        ✓ Alle ingrediënten zijn 100% biologisch
       </p>
     </div>
     <p style="font-size: 1.1rem; line-height: 1.8; color: var(--crust); margin-bottom: 1rem;">
@@ -480,6 +497,19 @@
       <div>
         <label for="aantal">Aantal *</label>
         <input type="number" id="aantal" name="aantal" min="1" max="20" value="1" required>
+      </div>
+      
+      <div>
+        <label for="voorkeursdatum">Voorkeursdatum levering (optioneel)</label>
+        <input type="date" id="voorkeursdatum" name="voorkeursdatum" min="">
+        <small style="display: block; margin-top: 0.5rem; color: var(--crust); opacity: 0.8;">
+          Geef aan wanneer je het brood graag wilt ontvangen. Ik neem contact met je op om een afspraak te maken.
+        </small>
+      </div>
+      
+      <div>
+        <label for="opmerkingen">Opmerkingen (optioneel)</label>
+        <textarea id="opmerkingen" name="opmerkingen" rows="3" placeholder="Bijv. bezorgadres, specifieke wensen, allergieën..."></textarea>
       </div>
       
       <div>
@@ -540,6 +570,11 @@ const productSelect = document.getElementById('product');
 const aantalInput = document.getElementById('aantal');
 const orderSummary = document.getElementById('orderSummary');
 const responseDiv = document.getElementById('response');
+const voorkeursdatumInput = document.getElementById('voorkeursdatum');
+
+// Set minimum date to today
+const today = new Date().toISOString().split('T')[0];
+voorkeursdatumInput.setAttribute('min', today);
 
 // Update order summary when product or aantal changes
 function updateOrderSummary() {
@@ -645,7 +680,9 @@ form.addEventListener('submit', async (e) => {
     aantal: aantal,
     prijs: totaal,
     gewicht: GEWICHTEN[product] * aantal,
-    betaling: form.betaling.value
+    betaling: form.betaling.value,
+    voorkeursdatum: form.voorkeursdatum.value || null,
+    opmerkingen: form.opmerkingen.value.trim() || null
   };
   
   // Disable form
