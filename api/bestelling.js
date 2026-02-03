@@ -154,7 +154,7 @@ async function sendOrderNotification(bestelling) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Proof of Bread <onboarding@resend.dev>',
+        from: 'Proof of Bread <bestellingen@proofofbread.nl>',
         to: [BAKKER_EMAIL],
         subject: `🍞 Nieuwe bestelling #${bestelling.id}`,
         html: `
