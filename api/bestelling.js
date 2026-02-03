@@ -80,7 +80,19 @@ export default async function handler(req, res) {
         // ALWAYS store by payment_request (most reliable)
         if (invoice.payment_request) {
           await kv.set(`invoice:${invoice.payment_request}`, 'pending', { ex: 3600 });
+          
+          // ALSO store order details for email later
+          await kv.set(`order:${invoice.payment_request}`, JSON.stringify({
+            naam: bestelling.naam,
+            email: bestelling.email,
+            product: bestelling.product,
+            aantal: bestelling.aantal,
+            prijs: bestelling.prijs,
+            gewicht: bestelling.gewicht
+          }), { ex: 86400 }); // Keep for 24h
+          
           console.log('💾 Invoice stored in Redis:', invoice.payment_request.substring(0, 50) + '...');
+          console.log('💾 Order details stored for email');
         }
         
         // Also store by payment_hash if available (from LNURL response)
