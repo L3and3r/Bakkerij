@@ -9,16 +9,24 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { paymentHash } = req.body;
+    const { paymentHash, paymentRequest } = req.body;
 
-    if (!paymentHash) {
-      return res.status(400).json({ error: 'Payment hash is verplicht' });
+    if (!paymentHash && !paymentRequest) {
+      return res.status(400).json({ error: 'Payment hash or request is verplicht' });
     }
 
-    console.log('🔍 Checking payment for:', paymentHash);
+    console.log('🔍 Checking payment for:', paymentHash || 'invoice');
 
-    // First check Redis cache for speed
-    const cachedStatus = await kv.get(`payment:${paymentHash}`);
+    // Check Redis cache - try both methods
+    let cachedStatus = null;
+    
+    if (paymentHash) {
+      cachedStatus = await kv.get(`payment:${paymentHash}`);
+    }
+    
+    if (!cachedStatus && paymentRequest) {
+      cachedStatus = await kv.get(`invoice:${paymentRequest}`);
+    }
     
     if (cachedStatus === 'paid') {
       console.log('✅ Found in Redis cache - PAID!');
