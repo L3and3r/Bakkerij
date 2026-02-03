@@ -103,18 +103,28 @@ async function sendLightningPaymentEmails(webhook) {
   const amountEur = (webhook.fiat_in_cents / 100).toFixed(2);
   const paymentRequest = webhook.payment_request;
   
+  console.log('📧 Preparing to send emails...');
+  console.log('📧 Payment request:', paymentRequest ? paymentRequest.substring(0, 50) + '...' : 'MISSING');
+  
   // Retrieve order details from Redis
   let orderData = null;
   if (paymentRequest) {
     try {
+      console.log('📦 Attempting to retrieve order data from Redis...');
       const orderJson = await kv.get(`order:${paymentRequest}`);
+      console.log('📦 Raw order data from Redis:', orderJson);
+      
       if (orderJson) {
         orderData = JSON.parse(orderJson);
         console.log('📦 Order data retrieved:', orderData);
+      } else {
+        console.log('📦 No order data in Redis for this payment_request');
       }
     } catch (err) {
-      console.log('⚠️ Could not retrieve order data:', err);
+      console.log('⚠️ Could not retrieve order data:', err.message);
     }
+  } else {
+    console.log('⚠️ No payment_request in webhook');
   }
   
   if (!orderData) {
