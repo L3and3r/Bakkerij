@@ -88,7 +88,9 @@ export default async function handler(req, res) {
             product: bestelling.product,
             aantal: bestelling.aantal,
             prijs: bestelling.prijs,
-            gewicht: bestelling.gewicht
+            gewicht: bestelling.gewicht,
+            voorkeursdatum: bestelling.voorkeursdatum,
+            opmerkingen: bestelling.opmerkingen
           }), { ex: 86400 }); // Keep for 24h
           
           console.log('💾 Invoice stored in Redis:', invoice.payment_request.substring(0, 50) + '...');
