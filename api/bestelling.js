@@ -168,6 +168,8 @@ async function sendOrderNotification(bestelling) {
           <p><strong>Totaal gewicht:</strong> ${bestelling.gewicht}g</p>
           <p><strong>Totaal bedrag:</strong> €${bestelling.prijs.toFixed(2)}</p>
           <p><strong>Betaalmethode:</strong> Tikkie</p>
+          ${bestelling.voorkeursdatum ? `<p><strong>Voorkeursdatum levering:</strong> ${new Date(bestelling.voorkeursdatum).toLocaleDateString('nl-NL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>` : ''}
+          ${bestelling.opmerkingen ? `<p><strong>Opmerkingen klant:</strong><br>${bestelling.opmerkingen.replace(/\n/g, '<br>')}</p>` : ''}
           <hr>
           <p><strong>📱 Actie vereist:</strong></p>
           <ol>
