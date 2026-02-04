@@ -17,8 +17,17 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Ontbrekende vereiste velden' });
     }
 
-    if (aantal < 1 || aantal > 20) {
-      return res.status(400).json({ error: 'Aantal moet tussen 1 en 20 zijn' });
+    if (aantal < 1) {
+      return res.status(400).json({ error: 'Aantal moet minimaal 1 zijn' });
+    }
+    
+    // Check max based on product
+    if (product === 'heel' && aantal > 2) {
+      return res.status(400).json({ error: 'Maximaal 2 hele broden per bestelling' });
+    }
+    
+    if (product === 'half' && aantal > 4) {
+      return res.status(400).json({ error: 'Maximaal 4 halve broden per bestelling' });
     }
 
     if (!['heel', 'half'].includes(product)) {
@@ -68,7 +77,7 @@ export default async function handler(req, res) {
       
       return res.status(200).json({ 
         success: true,
-        message: 'Bestelling ontvangen! Je ontvangt binnen enkele minuten een Tikkie-link per email.',
+        message: 'Bestelling ontvangen! Je ontvangt binnen enkele minuten een betaalverzoek per email.',
         orderId: bestelling.id
       });
     } 
@@ -171,14 +180,14 @@ async function sendOrderNotification(bestelling) {
           <p><strong>Aantal:</strong> ${bestelling.aantal}x</p>
           <p><strong>Totaal gewicht:</strong> ${bestelling.gewicht}g</p>
           <p><strong>Totaal bedrag:</strong> €${bestelling.prijs.toFixed(2)}</p>
-          <p><strong>Betaalmethode:</strong> Tikkie</p>
+          <p><strong>Betaalmethode:</strong> Betaalverzoek</p>
           ${bestelling.voorkeursdatum ? `<p><strong>Voorkeursdatum levering:</strong> ${new Date(bestelling.voorkeursdatum).toLocaleDateString('nl-NL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>` : ''}
           ${bestelling.opmerkingen ? `<p><strong>Opmerkingen klant:</strong><br>${bestelling.opmerkingen.replace(/\n/g, '<br>')}</p>` : ''}
           <hr>
           <p><strong>📱 Actie vereist:</strong></p>
           <ol>
-            <li>Maak een Tikkie aan voor €${bestelling.prijs.toFixed(2)}</li>
-            <li>Stuur de Tikkie link naar ${bestelling.email}</li>
+            <li>Maak een betaalverzoek aan voor €${bestelling.prijs.toFixed(2)}</li>
+            <li>Stuur de betaallink naar ${bestelling.email}</li>
             <li>Vermeld bestelnummer ${bestelling.id} in het bericht</li>
           </ol>
         `
