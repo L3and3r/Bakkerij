@@ -1,6 +1,6 @@
 # 🍞 Proof of Bread
 
-Een moderne webshop voor 100% biologisch Fries roggebrood met Lightning Bitcoin en Tikkie betalingen.
+Een moderne webshop voor 100% biologisch Fries roggebrood met Lightning Bitcoin en betaalverzoek betalingen.
 
 **Live website:** [proofofbread.nl](https://proofofbread.nl)
 
@@ -10,7 +10,7 @@ Een moderne webshop voor 100% biologisch Fries roggebrood met Lightning Bitcoin 
 
 - 🌾 **100% Biologisch roggebrood** - Ambachtelijk gemaakt volgens traditioneel recept
 - ⚡ **Lightning Bitcoin betalingen** - Instant betalingen via AlbyHub met automatische bevestiging
-- 💳 **Tikkie betalingen** - Handmatige betaling voor Nederlandse klanten
+- 💳 **Betaalverzoek betalingen** - Handmatige betaling voor Nederlandse klanten
 - 📧 **Automatische email notificaties** - Klanten en bakker krijgen direct bevestiging
 - 📊 **Google Analytics** - Inzicht in bezoekersgedrag
 - 🎨 **Professioneel design** - Warme, ambachtelijke uitstraling
@@ -32,7 +32,7 @@ Een moderne webshop voor 100% biologisch Fries roggebrood met Lightning Bitcoin 
 ### Payments
 - **AlbyHub** - Self-hosted Lightning node via NWC (Nostr Wallet Connect)
 - **LNURL** - Lightning invoice generation
-- **Tikkie** - Manual payment links
+- **Betaalverzoek** - Manual payment links
 
 ### Services
 - **Vercel** - Hosting & deployment
@@ -154,14 +154,14 @@ Ga naar Vercel → Settings → Environment Variables:
 
 ## 🔄 How It Works
 
-### Tikkie Flow (Manual)
+### Betaalverzoek Flow (Manual)
 
 ```
 1. Klant bestelt → Formulier validatie
 2. API: Email naar bakker met klantgegevens
-3. Bakker maakt Tikkie handmatig in app
-4. Bakker stuurt Tikkie link naar klant email
-5. Klant betaalt via Tikkie
+3. Bakker maakt betaalverzoek handmatig in bank app
+4. Bakker stuurt betaalverzoek link naar klant email
+5. Klant betaalt via betaalverzoek
 6. Bakker verwerkt bestelling
 ```
 
@@ -198,12 +198,12 @@ Beste [Naam],
 Je Lightning betaling is succesvol ontvangen. 
 Hieronder vind je de details van je bestelling:
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Product: Half roggebrood (375g)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Product: Half roggebrood (320g)
 Aantal: 1x
-Totaal gewicht: 375g
+Totaal gewicht: 320g
 Betaald: €3.00 (4523 sats) ⚡
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Ik neem binnen 24 uur contact met je op om de levering af te spreken.
 
@@ -218,16 +218,16 @@ Proof of Bread
 Van: Proof of Bread <bestellingen@proofofbread.nl>
 Onderwerp: ⚡ Lightning bestelling betaald - [Naam]
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Lightning bestelling betaald!
 
 Klant: [Naam]
 Email: [Email]
-Product: Half roggebrood (375g)
+Product: Half roggebrood (320g)
 Aantal: 1x
-Totaal gewicht: 375g
+Totaal gewicht: 320g
 Betaald: €3.00 (4523 sats) ⚡
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Actie vereist:
 Neem binnen 24 uur contact op met [Naam] 
@@ -261,8 +261,8 @@ const prijzen = {
 };
 
 const gewichten = {
-  heel: 750,   // Gewicht in gram
-  half: 375
+  heel: 640,   // Gewicht in gram
+  half: 320
 };
 ```
 
@@ -435,7 +435,7 @@ dig www.proofofbread.nl
 
 - [ ] **Order database** (Supabase/Postgres) voor order history
 - [ ] **Admin dashboard** voor order management en statistics
-- [ ] **Automated Tikkie** via Tikkie API (requires ABN AMRO business account)
+- [ ] **Automated betaalverzoek** via bank API
 - [ ] **Multiple products** - Verschillende broodsoorten
 - [ ] **Inventory management** - Voorraad tracking
 - [ ] **Delivery slots** - Kies bezorg/ophaal tijd
@@ -501,7 +501,7 @@ See `LICENSE` file for details.
 
 - ⚡ **Lightning payments:** Instant (< 5 seconds)
 - 📧 **Email delivery:** 99.9% success rate
-- 🌍 **Uptime:** 99.9% (Vercel SLA)
+- 🌐 **Uptime:** 99.9% (Vercel SLA)
 - 🚀 **Page load:** < 1 second
 - 📱 **Mobile traffic:** ~60% of visitors
 
