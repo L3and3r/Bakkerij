@@ -516,7 +516,7 @@
         <label for="betaling">Betaalmethode *</label>
         <select id="betaling" name="betaling" required>
           <option value="">— kies betaalmethode —</option>
-          <option value="tikkie">Betaalverzoek (je ontvangt binnen 24 uur een link per email)</option>
+          <option value="Betaalverzoek">Betaalverzoek (je ontvangt binnen 24 uur een link per email)</option>
           <option value="lightning">⚡ Lightning Bitcoin (directe betaling)</option>
         </select>
       </div>
@@ -738,8 +738,8 @@ form.addEventListener('submit', async (e) => {
       throw new Error(json.error || 'Er is iets misgegaan');
     }
     
-    // Handle Tikkie confirmation
-    if (json.success && data.betaling === 'tikkie') {
+    // Handle Betaalverzoek confirmation
+    if (json.success && data.betaling === 'Betaalverzoek') {
       showResponse(
         `<strong>✓ Bestelling ontvangen!</strong><br><br>
         Je ontvangt <strong>binnen 24 uur</strong> een betaalverzoek per email op: <strong>${data.email}</strong><br><br>
