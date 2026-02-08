@@ -160,14 +160,15 @@ async function sendOrderNotification(bestelling) {
   console.log('📧 Start Resend API call...');
   
   try {
-    const response = await fetch('https://api.resend.com/emails', {
+    // 1. Stuur notificatie naar bakker
+    const bakkerResponse = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Proof of Bread <proofofbread@gmail.com>',
+        from: 'Proof of Bread <noreply@proofofbread.nl>',
         to: [BAKKER_EMAIL],
         subject: `🍞 Nieuwe bestelling #${bestelling.id}`,
         html: `
@@ -194,17 +195,73 @@ async function sendOrderNotification(bestelling) {
       })
     });
 
-    console.log('📧 Resend response status:', response.status);
+    console.log('📧 Bakker email response status:', bakkerResponse.status);
     
-    const responseText = await response.text();
-    console.log('📧 Resend response:', responseText);
+    const bakkerResponseText = await bakkerResponse.text();
+    console.log('📧 Bakker email response:', bakkerResponseText);
 
-    if (!response.ok) {
-      console.error('❌ Email verzenden mislukt:', responseText);
-      throw new Error(`Resend error: ${responseText}`);
+    if (!bakkerResponse.ok) {
+      console.error('❌ Bakker email verzenden mislukt:', bakkerResponseText);
+      throw new Error(`Resend error: ${bakkerResponseText}`);
     } else {
-      console.log('✅ Order notificatie verzonden naar', BAKKER_EMAIL);
+      console.log('✅ Bakker notificatie verzonden naar', BAKKER_EMAIL);
     }
+
+    // 2. Stuur bevestiging naar klant
+    const klantResponse = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'Proof of Bread <noreply@proofofbread.nl>',
+        to: [bestelling.email],
+        subject: `✓ Bestelling bevestigd - #${bestelling.id}`,
+        html: `
+          <h2>Bedankt voor je bestelling!</h2>
+          <p>Hoi ${bestelling.naam},</p>
+          <p>Je bestelling is goed ontvangen. Je ontvangt binnen 24 uur een betaalverzoek per email.</p>
+          
+          <hr>
+          <h3>Bestelling details</h3>
+          <p><strong>Bestelnummer:</strong> ${bestelling.id}</p>
+          <p><strong>Product:</strong> ${productNaam}</p>
+          <p><strong>Aantal:</strong> ${bestelling.aantal}x</p>
+          <p><strong>Totaal gewicht:</strong> ${bestelling.gewicht}g</p>
+          <p><strong>Totaal bedrag:</strong> €${bestelling.prijs.toFixed(2)}</p>
+          ${bestelling.voorkeursdatum ? `<p><strong>Voorkeursdatum levering:</strong> ${new Date(bestelling.voorkeursdatum).toLocaleDateString('nl-NL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>` : ''}
+          ${bestelling.opmerkingen ? `<p><strong>Jouw opmerking:</strong><br>${bestelling.opmerkingen.replace(/\n/g, '<br>')}</p>` : ''}
+          
+          <hr>
+          <p><strong>Wat nu?</strong></p>
+          <ol>
+            <li>Je ontvangt binnen 24 uur een betaalverzoek op dit emailadres</li>
+            <li>Betaal het bedrag via de link in die email</li>
+            <li>Na ontvangst van de betaling ga ik aan de slag met je bestelling</li>
+          </ol>
+          
+          <p>Heb je vragen? Antwoord gerust op deze email!</p>
+          
+          <p>Met vriendelijke groet,<br>
+          Leander<br>
+          Proof of Bread</p>
+        `
+      })
+    });
+
+    console.log('📧 Klant email response status:', klantResponse.status);
+    
+    const klantResponseText = await klantResponse.text();
+    console.log('📧 Klant email response:', klantResponseText);
+
+    if (!klantResponse.ok) {
+      console.error('❌ Klant email verzenden mislukt:', klantResponseText);
+      // Don't throw - bakker email already sent
+    } else {
+      console.log('✅ Klant bevestiging verzonden naar', bestelling.email);
+    }
+
   } catch (error) {
     console.error('❌ Error sending email:', error);
     throw error;
