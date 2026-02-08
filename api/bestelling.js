@@ -34,7 +34,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Ongeldig product' });
     }
 
-    if (!['betaalverzoek', 'lightning'].includes(betaling)) {
+    if (!['Betaalverzoek', 'lightning'].includes(betaling)) {
       return res.status(400).json({ error: 'Ongeldige betaalmethode' });
     }
 
@@ -65,7 +65,7 @@ export default async function handler(req, res) {
     console.log('Nieuwe bestelling:', bestelling);
 
     // Handel betaling af op basis van gekozen methode
-    if (betaling === 'betaalverzoek') {
+    if (betaling === 'Betaalverzoek') {
       console.log('🍞 Betaalverzoek bestelling - start email verzenden');
       
       try {
