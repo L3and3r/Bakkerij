@@ -34,7 +34,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Ongeldig product' });
     }
 
-    if (!['tikkie', 'lightning'].includes(betaling)) {
+    if (!['betaalverzoek', 'lightning'].includes(betaling)) {
       return res.status(400).json({ error: 'Ongeldige betaalmethode' });
     }
 
@@ -65,8 +65,8 @@ export default async function handler(req, res) {
     console.log('Nieuwe bestelling:', bestelling);
 
     // Handel betaling af op basis van gekozen methode
-    if (betaling === 'tikkie') {
-      console.log('🍞 Tikkie bestelling - start email verzenden');
+    if (betaling === 'betaalverzoek') {
+      console.log('🍞 Betaalverzoek bestelling - start email verzenden');
       
       try {
         await sendOrderNotification(bestelling);
@@ -167,7 +167,7 @@ async function sendOrderNotification(bestelling) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Proof of Bread <bestellingen@proofofbread.nl>',
+        from: 'Proof of Bread <proofofbread@gmail.com>',
         to: [BAKKER_EMAIL],
         subject: `🍞 Nieuwe bestelling #${bestelling.id}`,
         html: `
