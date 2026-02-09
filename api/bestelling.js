@@ -217,6 +217,7 @@ async function sendOrderNotification(bestelling) {
       body: JSON.stringify({
         from: 'Proof of Bread <contact@proofofbread.nl>',
         to: [bestelling.email],
+        reply_to: [BAKKER_EMAIL],
         subject: `✓ Bestelling bevestigd - #${bestelling.id}`,
         html: `
           <h2>Bedankt voor je bestelling!</h2>
