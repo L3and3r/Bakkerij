@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Proof of Bread – 100% Biologisch Roggebrood</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="100% biologisch roggebrood volgens traditioneel recept. Ambachtelijk gebakken met zuurdesem. Betaal met Lightning Bitcoin of betaalverzoek.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='15' fill='%236b4423'/><text x='50' y='70' font-family='Arial,sans-serif' font-weight='bold' font-size='42' fill='%23f9f6f0' text-anchor='middle'>PoB</text></svg>">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L9EFTF2LXL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-L9EFTF2LXL');
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500&display=swap');
+  
+  :root { 
+    --grain: #f9f6f0;
+    --dark-rye: #2d1f1a;
+    --crust: #6b4423;
+    --crumb: #dfc9a8;
+    --accent: #c17a3a;
+    --success: #4a7c59;
+    --error: #c24e3a;
+  }
+  
+  * { box-sizing: border-box; }
+  
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--grain);
+    color: var(--dark-rye);
+    line-height: 1.6;
+  }
+  
+  /* Header */
+  header {
+    background: white;
+    color: var(--dark-rye);
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid #e5ddd0;
+  }
+  
+  .header-logo {
+    max-width: 550px;
+    width: 95%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    position: relative;
+
+  }
+  
+  @media (max-width: 600px) {
+    .header-logo {
+      max-width: 380px;
+    }
+  }
+  
+  header h1 {
+    margin: 0;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    position: relative;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    display: none; /* Hidden when logo is shown */
+  }
+  
+  header p {
+    margin: 2rem auto 0;
+    font-size: 1.1rem;
+    font-style: italic;
+    opacity: 0.85;
+    max-width: 500px;
+    position: relative;
+    color: var(--crust);
+  }
+  
+  /* Main container */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+  
+  /* Product grid */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 4rem;
+  }
+  
+  .product-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(45, 31, 26, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(107, 68, 35, 0.1);
+  }
+  
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(45, 31, 26, 0.15);
+  }
+  
+  .product-image {
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(135deg, var(--crumb) 0%, #e8d5b7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .product-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+  
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+  }
+  
+  /* Placeholder text for images */
+  .product-image-placeholder {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--crust);
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .product-info {
+    padding: 1.8rem;
+    position: relative;
+  }
+  
+  .bio-badge {
+    position: absolute;
+    top: -15px;
+    right: 15px;
+    background: linear-gradient(135deg, #4a7c59 0%, #5a9c69 100%);
+    color: white;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(74, 124, 89, 0.3);
+    letter-spacing: 0.03em;
+  }
+  
+  .product-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--dark-rye);
+  }
+  
+  .product-weight {
+    color: var(--crust);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+  }
+  
+  .product-price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--crust);
+    font-family: 'Crimson Pro', serif;
+    margin-bottom: 1rem;
+  }
+  
+  /* Order form section */
+  .order-section {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(45, 31, 26, 0.08);
+    border: 1px solid rgba(107, 68, 35, 0.1);
+  }
+  
+  .order-section h2 {
+    margin: 0 0 2rem 0;
+    font-family: 'Crimson Pro', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dark-rye);
+    border-bottom: 3px solid var(--crust);
+    padding-bottom: 0.8rem;
+  }
+  
+  form {
+    display: grid;
+    gap: 1.5rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--dark-rye);
+    font-size: 0.95rem;
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #e5ddd0;
+    border-radius: 8px;
+    font-family: inherit;
+    background: white;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+  
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--crust);
+    box-shadow: 0 0 0 3px rgba(107, 68, 35, 0.1);
+  }
+  
+  small {
+    font-size: 0.875rem;
+    color: var(--crust);
+    opacity: 0.9;
+  }
+  
+  /* Order summary */
+  .order-summary {
+    background: var(--grain);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    border: 2px dashed var(--crust);
+  }
+  
+  .order-summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+  }
+  
+  .order-summary-row.total {
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: 'Crimson Pro', serif;
+    color: var(--crust);
+    padding-top: 0.8rem;
+    border-top: 2px solid var(--crust);
+    margin-top: 0.5rem;
+  }
+  
+  button {
+    background: linear-gradient(135deg, var(--crust) 0%, var(--accent) 100%);
+    color: white;
+    border: none;
+    padding: 1.1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(107, 68, 35, 0.25);
+  }
+  
+  button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(107, 68, 35, 0.35);
+  }
+  
+  button:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  /* Response messages */
+  #response {
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+    border-radius: 8px;
+    display: none;
+  }
+  
+  #response.show {
+    display: block;
+  }
+  
+  #response.loading {
+    background: #f0f9ff;
+    border: 2px solid #3b82f6;
+    color: #1e40af;
+  }
+  
+  #response.success {
+    background: #f0fdf4;
+    border: 2px solid var(--success);
+    color: #166534;
+  }
+  
+  #response.error {
+    background: #fef2f2;
+    border: 2px solid var(--error);
+    color: #991b1b;
+  }
+  
+  .qr-container {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .qr-container img {
+    border: 4px solid var(--dark-rye);
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+  
+  .payment-status {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #fffbeb;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    color: var(--crust);
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    header h1 {
+      font-size: 2.2rem;
+    }
+    
+    .products {
+      grid-template-columns: 1fr;
+    }
+    
+    .order-section {
+      padding: 1.8rem;
+    }
+  }
+</style>
+</head>
+<body>
+<header>
+  <img src="Logo.png" alt="Proof of Bread" class="header-logo">
+  <p>100% biologisch roggebrood — langzaam gebakken volgens traditioneel recept</p>
+</header>
+
+<main>
+  <!-- Personal intro -->
+  <section style="max-width: 650px; margin: 0 auto 3rem; text-align: center; padding: 0 1.5rem;">
+    <p style="font-size: 1.15rem; line-height: 1.8; color: var(--crust); font-style: italic;">
+      Ik ben Leander en ik bak ambachtelijk roggebrood. 
+      Elk brood krijgt de tijd die het nodig heeft om goed te rijzen en op smaak te komen. 
+      Dat proef je terug: stevig, voedzaam en vol van smaak — zoals roggebrood bedoeld is.
+    </p>
+  </section>
+  
+  <!-- Product showcase -->
+  <section class="products">
+    <div class="product-card">
+      <div class="product-image">
+        <!-- Replace with: <img src="images/heel-roggebrood.jpg" alt="Heel roggebrood"> -->
+        <div class="product-image-placeholder">Heel<br>Roggebrood</div>
+      </div>
+      <div class="product-info">
+        <div class="bio-badge">100% BIO</div>
+        <h3>Heel Roggebrood</h3>
+        <p class="product-weight">Ca. 640 gram · 100% biologisch</p>
+        <div class="product-price">€5,00</div>
+      </div>
+    </div>
+    
+    <div class="product-card">
+      <div class="product-image">
+        <!-- Replace with: <img src="images/roggebrood-plakjes.jpg" alt="Roggebrood in plakjes"> -->
+        <div class="product-image-placeholder">Half<br>Roggebrood</div>
+      </div>
+      <div class="product-info">
+        <div class="bio-badge">100% BIO</div>
+        <h3>Half Roggebrood</h3>
+        <p class="product-weight">Ca. 320 gram · 100% biologisch</p>
+        <div class="product-price">€3,00</div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- About the bread section -->
+  <section style="background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(45, 31, 26, 0.08); border: 1px solid rgba(107, 68, 35, 0.1); margin-bottom: 3rem;">
+    <h2 style="margin: 0 0 1.5rem 0; font-family: 'Crimson Pro', serif; font-size: 2rem; font-weight: 700; color: var(--dark-rye); border-bottom: 3px solid var(--crust); padding-bottom: 0.8rem;">
+      Over het brood
+    </h2>
+    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--dark-rye); margin-bottom: 1rem;">
+      Dit roggebrood is gebakken volgens een traditioneel recept dat al eeuwenlang wordt gebruikt. Het onderscheidt zich door zijn hoge vochtgehalte, compacte structuur en rijke smaak. In tegenstelling tot modern supermarktbrood, krijgt dit brood de tijd om te rijzen met natuurlijke zuurdesem.
+    </p>
+    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--dark-rye); margin-bottom: 1rem;">
+      Ik volg het traditionele recept zo authentiek mogelijk: langzaam rijzen, ambachtelijk kneden, en bakken in een hete oven. Het resultaat is een brood dat stevig, voedzaam en lang houdbaar is — perfect voor iedereen die van echt, eerlijk brood houdt.
+    </p>
+    <div style="background: #fef3c7; border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-top: 1.5rem; border-radius: 4px;">
+      <p style="margin: 0; font-size: 1.05rem; line-height: 1.7; color: #92400e;">
+        <strong>Waarom langzaam rijzen?</strong> Door het desem minimaal 12 uur de tijd te geven, worden de granen beter verteerbaar en krijgt het brood zijn karakteristieke zure smaak. Dit maakt het brood niet alleen lekkerder, maar ook gezonder en beter voor je spijsvertering.
+      </p>
+    </div>
+  </section>
+  
+  <!-- Ingredients section -->
+  <section style="background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(45, 31, 26, 0.08); border: 1px solid rgba(107, 68, 35, 0.1); margin-bottom: 3rem;">
+    <h2 style="margin: 0 0 1.5rem 0; font-family: 'Crimson Pro', serif; font-size: 2rem; font-weight: 700; color: var(--dark-rye); border-bottom: 3px solid var(--crust); padding-bottom: 0.8rem;">
+      Ingrediënten
+    </h2>
+    <div style="background: #f0fdf4; border-left: 4px solid #4a7c59; padding: 1rem 1.5rem; margin-bottom: 1.5rem; border-radius: 4px;">
+      <p style="margin: 0; font-weight: 600; color: #166534; font-size: 1.05rem;">
+        ✓ Alle ingrediënten zijn 100% biologisch
+      </p>
+    </div>
+    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--crust); margin-bottom: 1rem;">
+      Ik maak mijn roggebrood volgens traditioneel recept, met alleen natuurlijke ingrediënten:
+    </p>
+    <ul style="list-style: none; padding: 0; margin: 0;">
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
+        – Desem van roggemeel
+      </li>
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
+        – Roggemeel
+      </li>
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
+        – Roggevlokken
+      </li>
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
+        – Gebroken rogge
+      </li>
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1);">
+        – Zout
+      </li>
+      <li style="padding: 0.6rem 0; font-size: 1.05rem; color: var(--dark-rye);">
+        – Water
+      </li>
+    </ul>
+    <p style="margin-top: 1.5rem; font-style: italic; color: var(--crust); font-size: 0.95rem;">
+      Zonder kunstmatige toevoegingen, kleurstoffen of smaakversterkers. Puur ambacht.
+    </p>
+  </section>
+  
+  <!-- Storage advice section -->
+  <section style="background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(45, 31, 26, 0.08); border: 1px solid rgba(107, 68, 35, 0.1); margin-bottom: 3rem;">
+    <h2 style="margin: 0 0 1.5rem 0; font-family: 'Crimson Pro', serif; font-size: 2rem; font-weight: 700; color: var(--dark-rye); border-bottom: 3px solid var(--crust); padding-bottom: 0.8rem;">
+      Bewaren & Houdbaarheid
+    </h2>
+    
+    <div style="background: #fef3c7; border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 1.5rem; border-radius: 4px;">
+      <p style="margin: 0; font-weight: 600; color: #92400e; font-size: 1.05rem;">
+        ⚠️ Belangrijk: Dit roggebrood heeft een hoog vochtgehalte en moet daarom gekoeld bewaard worden
+      </p>
+    </div>
+    
+    <p style="font-size: 1.05rem; line-height: 1.8; color: var(--dark-rye); margin-bottom: 1.5rem;">
+      Vers roggebrood bewaar je het beste goed afgesloten en zo koel mogelijk, omdat het door het hoge vochtgehalte snel kan schimmelen.
+    </p>
+    
+    <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.3rem; font-weight: 600; color: var(--crust); margin: 1.5rem 0 1rem 0;">
+      Korte richtlijn
+    </h3>
+    
+    <ul style="list-style: none; padding: 0; margin: 0 0 1.5rem 0;">
+      <li style="padding: 0.8rem 0 0.8rem 1.5rem; font-size: 1.05rem; line-height: 1.7; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1); position: relative;">
+        <span style="position: absolute; left: 0; color: var(--crust); font-weight: 600;">•</span>
+        <strong>Bewaar het in een koele omgeving:</strong> koelkast of écht koele (kelder)kast, donker en liefst constant van temperatuur.
+      </li>
+      <li style="padding: 0.8rem 0 0.8rem 1.5rem; font-size: 1.05rem; line-height: 1.7; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1); position: relative;">
+        <span style="position: absolute; left: 0; color: var(--crust); font-weight: 600;">•</span>
+        <strong>Verpak het luchtdicht:</strong> in de eigen plastic verpakking, of strak in folie of een goed sluitende doos, om uitdrogen en schimmel van buitenaf te beperken.
+      </li>
+      <li style="padding: 0.8rem 0 0.8rem 1.5rem; font-size: 1.05rem; line-height: 1.7; color: var(--dark-rye); border-bottom: 1px solid rgba(107, 68, 35, 0.1); position: relative;">
+        <span style="position: absolute; left: 0; color: var(--crust); font-weight: 600;">•</span>
+        <strong>Houdbaarheid in de koelkast:</strong> geopend roggebrood is meestal 1 à 2 weken goed, mits het goed verpakt is en niet muf of beschimmeld ruikt of eruitziet.
+      </li>
+      <li style="padding: 0.8rem 0 0.8rem 1.5rem; font-size: 1.05rem; line-height: 1.7; color: var(--dark-rye); position: relative;">
+        <span style="position: absolute; left: 0; color: var(--crust); font-weight: 600;">•</span>
+        <strong>Invriezen kan prima:</strong> porties maken en luchtdicht verpakken; dan blijft het ruwweg 1–3 maanden van goede kwaliteit, al kan het wat droger worden naarmate het langer ligt.
+      </li>
+    </ul>
+    
+    <div style="background: #f0f9ff; border-left: 4px solid #0284c7; padding: 1.2rem 1.5rem; border-radius: 4px; margin-top: 1.5rem;">
+      <h4 style="margin: 0 0 0.5rem 0; font-family: 'Crimson Pro', serif; font-size: 1.15rem; font-weight: 600; color: #075985;">
+        💡 Praktische tip
+      </h4>
+      <p style="margin: 0; font-size: 1.05rem; line-height: 1.7; color: #075985;">
+        Omdat dit roggebrood extra vochtig is, is de kans op schimmel groter dan bij drogere broodsoorten; daarom wordt specifiek geadviseerd dit in de koelkast te bewaren in plaats van op kamertemperatuur. Laat plakken die je gaat eten even op kamertemperatuur komen (of kort in een warme pan/oven) voor de beste smaak en structuur.
+      </p>
+    </div>
+  </section>
+  
+  <!-- FAQ section -->
+  <section style="background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(45, 31, 26, 0.08); border: 1px solid rgba(107, 68, 35, 0.1); margin-bottom: 3rem;">
+    <h2 style="margin: 0 0 1.5rem 0; font-family: 'Crimson Pro', serif; font-size: 2rem; font-weight: 700; color: var(--dark-rye); border-bottom: 3px solid var(--crust); padding-bottom: 0.8rem;">
+      Veelgestelde vragen
+    </h2>
+    
+    <div style="margin-bottom: 2rem;">
+      <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.3rem; font-weight: 600; color: var(--crust); margin: 0 0 0.5rem 0;">
+        Wanneer wordt er gebakken?
+      </h3>
+      <p style="margin: 0; font-size: 1.05rem; line-height: 1.7; color: var(--dark-rye);">
+        Ik bak bestellingen gebundeld, meestal 1-2 keer per week. Na je bestelling neem ik contact op met een concrete leverdatum. Als je een voorkeursdatum hebt, kun je die aangeven in het bestelformulier.
+      </p>
+    </div>
+    
+    <div style="margin-bottom: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(107, 68, 35, 0.15);">
+      <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.3rem; font-weight: 600; color: var(--crust); margin: 0 0 0.5rem 0;">
+        Hoe werkt levering?
+      </h3>
+      <p style="margin: 0; font-size: 1.05rem; line-height: 1.7; color: var(--dark-rye);">
+        We spreken een ophaalmoment af of ik lever persoonlijk in de regio Arnhem. Voor locaties buiten Arnhem kun je via het bestelformulier een opmerking plaatsen of reageren op de bevestigingsmail.
+      </p>
+    </div>
+    
+    <div style="margin-bottom: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(107, 68, 35, 0.15);">
+      <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.3rem; font-weight: 600; color: var(--crust); margin: 0 0 0.5rem 0;">
+        Hoe ver van tevoren moet ik bestellen?
+      </h3>
+      <p style="margin: 0; font-size: 1.05rem; line-height: 1.7; color: var(--dark-rye);">
+        Idealiter 2-3 dagen van tevoren, zodat ik het desem kan voorbereiden en het brood de tijd krijgt om optimaal te rijzen. Spoed? Stuur even een berichtje, dan kijk ik wat mogelijk is!
+      </p>
+    </div>
+    
+    <div style="margin-bottom: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(107, 68, 35, 0.15);">
+      <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.3rem; font-weight: 600; color: var(--crust); margin: 0 0 0.5rem 0;">
+        Is roggebrood glutenvrij?
+      </h3>
+      <p style="margin: 0; font-size: 1.05rem; line-height: 1.7; color: var(--dark-rye);">
+        Nee, rogge bevat van nature gluten. Dit brood is dus <strong>niet geschikt</strong> voor mensen met coeliakie of een glutenallergie.
+      </p>
+    </div>
+    
+    <div style="margin-bottom: 0; padding-top: 1.5rem; border-top: 1px solid rgba(107, 68, 35, 0.15);">
+      <h3 style="font-family: 'Crimson Pro', serif; font-size: 1.3rem; font-weight: 600; color: var(--crust); margin: 0 0 0.5rem 0;">
+        Nog andere vragen?
+      </h3>
+      <p style="margin: 0; font-size: 1.05rem; line-height: 1.7; color: var(--dark-rye);">
+        Plaats een opmerking in het bestelformulier of reageer op de bevestigingsmail die je ontvangt. Ik help je graag verder!
+      </p>
+    </div>
+  </section>
+  
+  <!-- Order form -->
+  <section class="order-section">
+    <h2>Bestellen</h2>
+    <form id="orderForm">
+      <div>
+        <label for="naam">Naam *</label>
+        <input type="text" id="naam" name="naam" required>
+      </div>
+      
+      <div>
+        <label for="email">E-mailadres *</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      
+      <div>
+        <label for="product">Kies uw roggebrood *</label>
+        <select id="product" name="product" required>
+          <option value="">— maak een keuze —</option>
+          <option value="heel" data-prijs="5.00" data-gewicht="640">Heel roggebrood (640g) - €5,00</option>
+          <option value="half" data-prijs="3.00" data-gewicht="320">Half roggebrood (320g) - €3,00</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="aantal">Aantal *</label>
+        <input type="number" id="aantal" name="aantal" min="1" max="2" value="1" required>
+        <small id="aantalHelp" style="display: block; margin-top: 0.5rem; color: var(--crust); opacity: 0.8;">
+          Maximaal 2 hele broden
+        </small>
+      </div>
+      
+      <div>
+        <label for="voorkeursdatum">Voorkeursdatum levering (optioneel)</label>
+        <input type="date" id="voorkeursdatum" name="voorkeursdatum" min="">
+        <small style="display: block; margin-top: 0.5rem; color: var(--crust); opacity: 0.8;">
+          Geef aan wanneer je het brood bij voorkeur wilt ontvangen. Ik neem contact met je op om een definitieve afspraak te maken.
+        </small>
+      </div>
+      
+      <div>
+        <label for="opmerkingen">Opmerkingen (optioneel)</label>
+        <textarea id="opmerkingen" name="opmerkingen" rows="3" placeholder="Bijv. bezorgadres, specifieke wensen, allergieën..."></textarea>
+      </div>
+      
+      <div>
+        <label for="betaling">Betaalmethode *</label>
+        <select id="betaling" name="betaling" required>
+          <option value="">— kies betaalmethode —</option>
+          <option value="Betaalverzoek">Betaalverzoek (je ontvangt binnen 24 uur een link per email)</option>
+          <option value="lightning">⚡ Lightning Bitcoin (directe betaling)</option>
+        </select>
+      </div>
+      
+      <!-- Order summary -->
+      <div class="order-summary" id="orderSummary" style="display: none;">
+        <div class="order-summary-row">
+          <span>Product:</span>
+          <span id="summaryProduct">-</span>
+        </div>
+        <div class="order-summary-row">
+          <span>Aantal:</span>
+          <span id="summaryAantal">-</span>
+        </div>
+        <div class="order-summary-row">
+          <span>Gewicht:</span>
+          <span id="summaryGewicht">-</span>
+        </div>
+        <div class="order-summary-row total">
+          <span>Totaal:</span>
+          <span id="summaryTotaal">€0,00</span>
+        </div>
+      </div>
+      
+      <button type="submit" id="submitBtn">Bestelling plaatsen & Betalen</button>
+    </form>
+    
+    <div id="response"></div>
+  </section>
+</main>
+
+<footer>
+  <div style="max-width: 600px; margin: 0 auto;">
+    <p style="margin: 0 0 0.5rem 0; font-size: 1rem;">
+      <strong>Proof of Bread</strong> — 100% biologisch ambachtelijk brood
+    </p>
+    <p style="margin: 0 0 1rem 0; font-size: 0.95rem;">
+      Vragen? Gebruik het opmerkingenveld in het bestelformulier of reageer op je bevestigingsmail
+    </p>
+    <p style="margin: 0; font-size: 0.85rem; opacity: 0.7;">
+      &copy; 2026 Proof of Bread · Powered by ⚡ Lightning
+    </p>
+  </div>
+</footer>
+
+<script>
+// Product prices
+const PRIJZEN = {
+  'heel': 5.00,
+  'half': 3.00
+};
+
+const GEWICHTEN = {
+  'heel': 640,
+  'half': 320
+};
+
+// Form elements
+const form = document.getElementById('orderForm');
+const productSelect = document.getElementById('product');
+const aantalInput = document.getElementById('aantal');
+const aantalHelp = document.getElementById('aantalHelp');
+const orderSummary = document.getElementById('orderSummary');
+const responseDiv = document.getElementById('response');
+const voorkeursdatumInput = document.getElementById('voorkeursdatum');
+
+// Set minimum date to today
+const today = new Date().toISOString().split('T')[0];
+voorkeursdatumInput.setAttribute('min', today);
+
+// Update max aantal based on product
+productSelect.addEventListener('change', function() {
+  const product = productSelect.value;
+  if (product === 'heel') {
+    aantalInput.setAttribute('max', '2');
+    aantalHelp.textContent = 'Maximaal 2 hele broden';
+  } else if (product === 'half') {
+    aantalInput.setAttribute('max', '4');
+    aantalHelp.textContent = 'Maximaal 4 halve broden';
+  }
+  // Reset aantal if it exceeds new max
+  validateAantal();
+  updateOrderSummary();
+});
+
+// Validate aantal doesn't exceed max
+function validateAantal() {
+  const max = parseInt(aantalInput.getAttribute('max'));
+  const value = parseInt(aantalInput.value);
+  
+  if (value > max) {
+    aantalInput.value = max;
+  }
+  if (value < 1) {
+    aantalInput.value = 1;
+  }
+}
+
+// Validate aantal on input and blur
+aantalInput.addEventListener('input', validateAantal);
+aantalInput.addEventListener('blur', validateAantal);
+
+// Update order summary when product or aantal changes
+function updateOrderSummary() {
+  const product = productSelect.value;
+  const aantal = parseInt(aantalInput.value) || 0;
+  
+  if (product && aantal > 0) {
+    const prijs = PRIJZEN[product];
+    const gewicht = GEWICHTEN[product];
+    const totaal = prijs * aantal;
+    const totaalGewicht = gewicht * aantal;
+    
+    document.getElementById('summaryProduct').textContent = 
+      product === 'heel' ? 'Heel roggebrood' : 'Half roggebrood';
+    document.getElementById('summaryAantal').textContent = aantal + 'x';
+    document.getElementById('summaryGewicht').textContent = 
+      totaalGewicht >= 1000 
+        ? (totaalGewicht / 1000).toFixed(1) + ' kg' 
+        : totaalGewicht + ' gram';
+    document.getElementById('summaryTotaal').textContent = 
+      '€' + totaal.toFixed(2).replace('.', ',');
+    
+    orderSummary.style.display = 'block';
+  } else {
+    orderSummary.style.display = 'none';
+  }
+}
+
+productSelect.addEventListener('change', updateOrderSummary);
+aantalInput.addEventListener('input', updateOrderSummary);
+
+// Show response message
+function showResponse(message, type) {
+  responseDiv.innerHTML = message;
+  responseDiv.className = 'show ' + type;
+  responseDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Lightning payment status checking
+let paymentCheckInterval = null;
+
+function checkLightningPayment(paymentHash, paymentRequest) {
+  return fetch(`/api/check-payment`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ paymentHash, paymentRequest })
+  })
+  .then(res => res.json());
+}
+
+function startPaymentCheck(paymentHash, paymentRequest) {
+  let attempts = 0;
+  const maxAttempts = 150; // 5 minuten (2 second intervals)
+  
+  paymentCheckInterval = setInterval(async () => {
+    attempts++;
+    
+    try {
+      const result = await checkLightningPayment(paymentHash, paymentRequest);
+      
+      if (result.paid) {
+        clearInterval(paymentCheckInterval);
+        showResponse(
+          `<strong>✓ Betaling ontvangen!</strong><br>
+          Bedankt voor je bestelling. Je ontvangt een bevestiging per e-mail.`,
+          'success'
+        );
+        form.reset();
+        orderSummary.style.display = 'none';
+      } else if (attempts >= maxAttempts) {
+        clearInterval(paymentCheckInterval);
+        showResponse(
+          `<strong>⏱️ Betaling verwerken...</strong><br><br>
+          De automatische check is gestopt, maar als je de invoice hebt betaald krijg je gewoon je brood! 
+          Ik zie betalingen direct in mijn systeem en verwerk je bestelling zodra de betaling binnen is.<br><br>
+          <small>Bedankt voor je geduld!</small>`,
+          'loading'
+        );
+      }
+    } catch (err) {
+      console.error('Payment check error:', err);
+    }
+  }, 2000); // Check every 2 seconds - sneller!
+}
+
+// Form submission
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  // Clear any existing payment check
+  if (paymentCheckInterval) {
+    clearInterval(paymentCheckInterval);
+  }
+  
+  const product = productSelect.value;
+  const aantal = parseInt(aantalInput.value);
+  const totaal = PRIJZEN[product] * aantal;
+  
+  const data = {
+    naam: form.naam.value.trim(),
+    email: form.email.value.trim(),
+    product: product,
+    aantal: aantal,
+    prijs: totaal,
+    gewicht: GEWICHTEN[product] * aantal,
+    betaling: form.betaling.value,
+    voorkeursdatum: form.voorkeursdatum.value || null,
+    opmerkingen: form.opmerkingen.value.trim() || null
+  };
+  
+  // Disable form
+  const submitBtn = document.getElementById('submitBtn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Bezig met verwerken...';
+  
+  showResponse('Even geduld, we verwerken je bestelling...', 'loading');
+  
+  try {
+    const res = await fetch('/api/bestelling', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    
+    const json = await res.json();
+    
+    if (!res.ok) {
+      throw new Error(json.error || 'Er is iets misgegaan');
+    }
+    
+    // Handle Betaalverzoek confirmation
+    if (json.success && data.betaling === 'Betaalverzoek') {
+      showResponse(
+        `<strong>✓ Bestelling ontvangen!</strong><br><br>
+        Je ontvangt <strong>binnen 24 uur</strong> een betaalverzoek per email op: <strong>${data.email}</strong><br><br>
+        Ik verwerk bestellingen handmatig, dus het kan even duren voordat je de betaallink ontvangt.<br>
+        <small style="opacity: 0.8;">Bestelnummer: ${json.orderId}</small>`,
+        'success'
+      );
+      form.reset();
+      orderSummary.style.display = 'none';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Bestelling plaatsen & Betalen';
+      return;
+    }
+    
+    // Handle iDEAL redirect (legacy, niet meer gebruikt)
+    if (json.url) {
+      showResponse(
+        'Je wordt doorgestuurd naar iDEAL...',
+        'loading'
+      );
+      setTimeout(() => {
+        window.location.href = json.url;
+      }, 1000);
+      return;
+    }
+    
+    // Handle Lightning invoice
+    if (json.invoice && json.invoice.payment_request) {
+      const qrData = encodeURIComponent(json.invoice.payment_request);
+      showResponse(
+        `<div class="qr-container">
+          <strong>⚡ Scan en betaal met je Lightning wallet</strong>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${qrData}" 
+               alt="Lightning QR code">
+          <div class="payment-status">
+            ⚡ Wachten op betaling...<br>
+            <small>Totaal: €${totaal.toFixed(2).replace('.', ',')}</small>
+          </div>
+        </div>`,
+        'loading'
+      );
+      
+      // Start checking - now with Redis this actually works instantly!
+      if (json.invoice.payment_hash || json.invoice.payment_request) {
+        startPaymentCheck(json.invoice.payment_hash, json.invoice.payment_request);
+      }
+      return;
+    }
+    
+    // Fallback success
+    showResponse(
+      'Bestelling ontvangen! Je ontvangt een bevestiging per e-mail.',
+      'success'
+    );
+    form.reset();
+    orderSummary.style.display = 'none';
+    
+  } catch (err) {
+    showResponse(
+      `<strong>Fout bij verwerken bestelling</strong><br>${err.message}`,
+      'error'
+    );
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Bestelling plaatsen & Betalen';
+  }
+});
+
+// Initialize
+updateOrderSummary();
+</script>
+</body>
+</html>
