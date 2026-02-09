@@ -168,7 +168,7 @@ async function sendOrderNotification(bestelling) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Proof of Bread <noreply@proofofbread.nl>',
+        from: 'Proof of Bread <contact@proofofbread.nl>',
         to: [BAKKER_EMAIL],
         subject: `🍞 Nieuwe bestelling #${bestelling.id}`,
         html: `
@@ -215,7 +215,7 @@ async function sendOrderNotification(bestelling) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        from: 'Proof of Bread <noreply@proofofbread.nl>',
+        from: 'Proof of Bread <contact@proofofbread.nl>',
         to: [bestelling.email],
         subject: `✓ Bestelling bevestigd - #${bestelling.id}`,
         html: `
