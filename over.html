@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Over Proof of Bread</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Over Proof of Bread — ambachtelijk roggebrood als bewijs van echte arbeid, schaarste en waarde.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='15' fill='%236b4423'/><text x='50' y='70' font-family='Arial,sans-serif' font-weight='bold' font-size='42' fill='%23f9f6f0' text-anchor='middle'>PoB</text></svg>">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L9EFTF2LXL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-L9EFTF2LXL');
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Inter:wght@400;500&display=swap');
+
+  :root {
+    --grain: #f9f6f0;
+    --dark-rye: #2d1f1a;
+    --crust: #6b4423;
+    --crumb: #dfc9a8;
+    --accent: #c17a3a;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--grain);
+    color: var(--dark-rye);
+    line-height: 1.6;
+  }
+
+  /* Header */
+  header {
+    background: white;
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    border-bottom: 1px solid #e5ddd0;
+  }
+
+  .header-logo {
+    max-width: 550px;
+    width: 95%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+  }
+
+  @media (max-width: 600px) {
+    .header-logo { max-width: 380px; }
+  }
+
+  header p {
+    margin: 2rem auto 0;
+    font-size: 1.1rem;
+    font-style: italic;
+    opacity: 0.85;
+    max-width: 500px;
+    color: var(--crust);
+  }
+
+  /* Nav */
+  nav {
+    background: white;
+    border-bottom: 1px solid #e5ddd0;
+    text-align: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  nav a {
+    color: var(--crust);
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: 500;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  nav a:hover { opacity: 1; }
+  nav a.active { 
+    color: var(--dark-rye); 
+    opacity: 1;
+    border-bottom: 2px solid var(--crust);
+    padding-bottom: 2px;
+  }
+
+  /* Main */
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 5rem;
+  }
+
+  h1 {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--dark-rye);
+    margin: 0 0 2.5rem 0;
+    line-height: 1.2;
+    border-bottom: 3px solid var(--crust);
+    padding-bottom: 1rem;
+  }
+
+  .artikel p {
+    font-size: 1.1rem;
+    line-height: 1.85;
+    color: var(--dark-rye);
+    margin: 0 0 1.5rem 0;
+  }
+
+  .artikel p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Citaat stijl voor de slotregels */
+  .slotwoord {
+    margin-top: 3rem;
+    padding: 2rem 2.5rem;
+    background: white;
+    border-left: 4px solid var(--crust);
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 20px rgba(45, 31, 26, 0.07);
+  }
+
+  .slotwoord p {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 1.3rem;
+    line-height: 1.7;
+    color: var(--crust);
+    font-style: italic;
+    margin: 0 0 0.6rem 0;
+  }
+
+  .slotwoord p:last-child {
+    margin-bottom: 0;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.35rem;
+    color: var(--dark-rye);
+  }
+
+  /* Tussenstuk highlight */
+  .highlight {
+    background: white;
+    border-radius: 8px;
+    padding: 1.8rem 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 20px rgba(45, 31, 26, 0.07);
+    border: 1px solid rgba(107, 68, 35, 0.1);
+  }
+
+  .highlight p {
+    font-size: 1.1rem;
+    line-height: 1.85;
+    color: var(--dark-rye);
+    margin: 0 0 1rem 0;
+  }
+
+  .highlight p:last-child { margin-bottom: 0; }
+
+  /* CTA knop */
+  .cta {
+    display: inline-block;
+    margin-top: 2.5rem;
+    padding: 1rem 2.5rem;
+    background: var(--crust);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(107, 68, 35, 0.25);
+  }
+
+  .cta:hover {
+    background: var(--dark-rye);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(107, 68, 35, 0.35);
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    color: var(--crust);
+    font-size: 0.9rem;
+  }
+
+  footer div { max-width: 600px; margin: 0 auto; }
+  footer p { margin: 0 0 0.4rem 0; }
+  footer p:last-child { opacity: 0.6; font-size: 0.85rem; }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 2.1rem; }
+    main { padding: 2.5rem 1.2rem 4rem; }
+    .slotwoord { padding: 1.5rem 1.5rem; }
+    .slotwoord p { font-size: 1.15rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html">
+    <img src="Logo.png" alt="Proof of Bread" class="header-logo">
+  </a>
+  <p>100% biologisch roggebrood — langzaam gebakken volgens traditioneel recept</p>
+</header>
+
+<nav>
+  <a href="index.html">Bestellen</a>
+  <a href="over.html" class="active">Over Proof of Bread</a>
+</nav>
+
+<main>
+  <h1>Over Proof of Bread</h1>
+
+  <article class="artikel">
+    <p>Proof of Bread is ontstaan vanuit een eenvoudige overtuiging: wat we dagelijks eten, moet echt en puur zijn.</p>
+
+    <p>In een tijd waarin snelheid, schaal en marketing vaak belangrijker lijken dan inhoud, ben ik opnieuw gaan nadenken over wat waarde werkelijk betekent. Dat begon bij zelfvoorzienendheid. Begrijpen waar mijn voedsel vandaan komt. Weten wat erin zit. Vertrouwen op mijn eigen handen.</p>
+
+    <p>Zo ontstond het idee om authentiek roggebrood te bakken.</p>
+
+    <div class="highlight">
+      <p>Roggebrood laat zich niet haasten. Het vraagt tijd, geduld en aandacht. Het moet rijpen, rusten en zich ontwikkelen. Net als alles wat echte waarde heeft. Elk brood dat hier uit de oven komt, is het resultaat van ambacht en toewijding — geen massa en geen kunstmatige versnelling.</p>
+    </div>
+
+    <p>We leven in een wereld waarin waarde steeds abstracter is geworden. Waar prijzen stijgen, kwaliteit daalt en "meer" zelden ook "beter" betekent. Dat wringt. Want echte waarde ontstaat niet uit massaproductie en marketingcampagnes — maar uit werk, schaarste en energie.</p>
+
+    <p>Daar ligt ook de link met Bitcoin.</p>
+
+    <p>Het principe van Proof of Work laat zien dat digitale waarde pas betekenis krijgt wanneer er echte inspanning tegenover staat. Geen centrale partij die het bijmaakt, maar een systeem waarin energie en tijd de basis vormen. <a href="https://www.l3and3r.org" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 1px;">Meer weten over Bitcoin?</a></p>
+
+    <p>Proof of Bread volgt datzelfde principe — tastbaar en lokaal.</p>
+
+    <p>Elk brood is het bewijs van werk. Van tijd. Van energie. Van aandacht. Wat je vasthoudt is geen industrieel product, maar geconcentreerde inspanning. Geen shortcuts. Geen kunstmatige optimalisatie. Alleen pure ingrediënten en het proces dat nodig is om ze tot iets voedzaams en duurzaams te maken.</p>
+
+    <div class="slotwoord">
+      <p>Echte arbeid. Echte schaarste. Echte waarde.</p>
+      <p>En dat proef je.</p>
+    </div>
+
+    <a href="index.html#bestellen" class="cta">Bestel Nu</a>
+  </article>
+</main>
+
+<footer>
+  <div>
+    <p><strong>Proof of Bread</strong> — 100% biologisch ambachtelijk brood</p>
+    <p>Vragen? Gebruik het opmerkingenveld in het bestelformulier of reageer op je bevestigingsmail</p>
+    <p><a href="https://www.l3and3r.org" target="_blank" rel="noopener noreferrer" style="color: var(--crust); text-decoration: none; opacity: 0.8;">Meer weten over Bitcoin?</a></p>
+    <p>&copy; 2026 Proof of Bread · Powered by ⚡ Lightning</p>
+  </div>
+</footer>
+
+</body>
+</html>

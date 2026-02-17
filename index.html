@@ -42,6 +42,33 @@
     line-height: 1.6;
   }
   
+  /* Nav */
+  nav {
+    background: white;
+    border-bottom: 1px solid #e5ddd0;
+    text-align: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  nav a {
+    color: var(--crust);
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: 500;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+
+  nav a:hover { opacity: 1; }
+
+  nav a.active {
+    color: var(--dark-rye);
+    opacity: 1;
+    border-bottom: 2px solid var(--crust);
+    padding-bottom: 2px;
+  }
+
   /* Header */
   header {
     background: white;
@@ -395,6 +422,11 @@
   <p>100% biologisch roggebrood — langzaam gebakken volgens traditioneel recept</p>
 </header>
 
+<nav>
+  <a href="index.html" class="active">Bestellen</a>
+  <a href="over.html">Over Proof of Bread</a>
+</nav>
+
 <main>
   <!-- Personal intro -->
   <section style="max-width: 650px; margin: 0 auto 3rem; text-align: center; padding: 0 1.5rem;">
@@ -679,8 +711,11 @@
     <p style="margin: 0 0 0.5rem 0; font-size: 1rem;">
       <strong>Proof of Bread</strong> — 100% biologisch ambachtelijk brood
     </p>
-    <p style="margin: 0 0 1rem 0; font-size: 0.95rem;">
+    <p style="margin: 0 0 0.5rem 0; font-size: 0.95rem;">
       Vragen? Gebruik het opmerkingenveld in het bestelformulier of reageer op je bevestigingsmail
+    </p>
+    <p style="margin: 0 0 1rem 0; font-size: 0.95rem;">
+      <a href="https://www.l3and3r.org" target="_blank" rel="noopener noreferrer" style="color: var(--crust); text-decoration: none; opacity: 0.8;">Meer weten over Bitcoin?</a>
     </p>
     <p style="margin: 0; font-size: 0.85rem; opacity: 0.7;">
       &copy; 2026 Proof of Bread · Powered by ⚡ Lightning
